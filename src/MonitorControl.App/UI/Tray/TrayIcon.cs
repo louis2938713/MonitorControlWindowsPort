@@ -56,6 +56,9 @@ internal sealed class TrayIcon : IDisposable
 
     public void SetVisible(bool visible) => _icon.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
 
+    /// <summary>Windows notification from the app (shown even when the icon is hidden in the overflow area).</summary>
+    public void Notify(string title, string message) => _icon.ShowNotification(title, message);
+
     /// <summary>Opens the flyout on the display under the mouse.</summary>
     public void OpenFlyout()
     {

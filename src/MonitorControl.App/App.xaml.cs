@@ -10,6 +10,7 @@ using MonitorControl.App.UI.Tray;
 using MonitorControl.Core;
 using MonitorControl.Core.Displays;
 using MonitorControl.Core.Enums;
+using MonitorControl.Core.Input;
 using MonitorControl.Core.Platform;
 using MonitorControl.Core.Settings;
 using Wpf.Ui.Appearance;
@@ -30,6 +31,10 @@ public partial class App : Application
     private SystemEventsMonitor? _systemEvents;
     private TrayIcon? _trayIcon;
     private OsdService? _osd;
+    private ShortcutStore? _shortcuts;
+    private AppShell? _shell;
+    private AudioService? _audio;
+    private KeyboardService? _keyboard;
     private bool _shutDown;
 
     /// <summary>Build number of this version (settings migration).</summary>
@@ -69,9 +74,23 @@ public partial class App : Application
         var flyoutWindow = new FlyoutWindow();
         _trayIcon = new TrayIcon(flyoutWindow, actions);
         var flyout = new FlyoutBuilder(flyoutWindow, _displayManager, state, actions, _trayIcon.SetVisible);
-        _controller.Shell = new AppShell(_trayIcon, flyout);
+        _shortcuts = new ShortcutStore(_settings);
+        _shell = new AppShell(_trayIcon, flyout, _shortcuts);
+        _controller.Shell = _shell;
 
         _messageWindow = new MessageWindow();
+        _audio = new AudioService();
+        var displayManager = _displayManager;
+        _keyboard = new KeyboardService(prefs, ui, _messageWindow, _shortcuts, shell => (
+            new MediaKeyHandler(displayManager, _audio, shell),
+            new ShortcutManager(displayManager, ui, shell, KeyboardService.RepeatRate)));
+        _keyboard.ConflictsDetected += (_, names) => _trayIcon.Notify(
+            Loc.T("App.Name"),
+            Loc.F("Notification.ShortcutConflicts", string.Join(", ", names.Select(n => ShortcutNames.Display(n)))));
+        _shell.Keyboard = _keyboard;
+        flyoutWindow.Opening += (_, _) => _keyboard.ShortcutManager.Disengage();
+        _audio.DefaultOutputChanged += (_, _) => _keyboard.Update();
+
         _systemEvents = new SystemEventsMonitor(ui, _messageWindow);
         _systemEvents.Sleeping += (_, _) => _controller.Sleep();
         _systemEvents.Waking += (_, _) => _controller.Wake();
@@ -139,6 +158,8 @@ public partial class App : Application
         finally
         {
             _systemEvents?.Dispose();
+            _keyboard?.Dispose();
+            _audio?.Dispose();
             _messageWindow?.Dispose();
             _trayIcon?.Dispose();
             _displayManager?.Dispose();
