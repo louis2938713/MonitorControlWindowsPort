@@ -8,6 +8,8 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <!-- Same RIDs everywhere so lock files stay valid for x64 and ARM64 builds. -->
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
     <Deterministic>true</Deterministic>
 
     <Product>MonitorControl</Product>
