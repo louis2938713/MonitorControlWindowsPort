@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- App -->
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="H.NotifyIcon.Wpf" Version="2.4.1" />
+    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.363" />
+    <PackageVersion Include="NAudio.Wasapi" Version="3.1.0" />
+    <PackageVersion Include="Serilog" Version="4.4.0" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageVersion Include="System.Management" Version="10.0.13" />
+    <PackageVersion Include="Velopack" Version="1.2.161" />
+    <PackageVersion Include="WPF-UI" Version="4.3.0" />
+    <!-- Tests -->
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+  </ItemGroup>
+</Project>

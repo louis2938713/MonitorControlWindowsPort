@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <Deterministic>true</Deterministic>
+
+    <Product>MonitorControl</Product>
+    <Company>MonitorControl</Company>
+    <Copyright>Copyright © MonitorControl. @JoniVR, @theOneyouseek, @waydabber and others</Copyright>
+    <Version>4.4.0</Version>
+    <!-- Mirrors CFBundleVersion of the macOS app; used for settings migration. -->
+    <BuildNumber>7152</BuildNumber>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <RestoreLockedMode>true</RestoreLockedMode>
+  </PropertyGroup>
+</Project>

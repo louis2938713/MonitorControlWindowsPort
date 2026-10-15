@@ -6,3 +6,11 @@ Carthage
 
 ### Xcode ###
 xcuserdata/
+### .NET / Visual Studio ###
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+publish/
+artifacts/

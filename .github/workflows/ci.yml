@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, windows-port]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Restore
+        run: dotnet restore MonitorControl.Windows.slnx --locked-mode
+
+      - name: Format
+        run: dotnet format MonitorControl.Windows.slnx --verify-no-changes --no-restore
+
+      - name: Build
+        run: dotnet build MonitorControl.Windows.slnx -c Release --no-restore
+
+      - name: Test
+        run: dotnet test --solution MonitorControl.Windows.slnx -c Release --no-build
+
+      - name: Build ARM64
+        run: dotnet build src/MonitorControl.App/MonitorControl.App.csproj -c Release -r win-arm64
