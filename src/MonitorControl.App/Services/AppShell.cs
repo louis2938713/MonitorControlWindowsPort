@@ -4,9 +4,9 @@ using MonitorControl.Core;
 namespace MonitorControl.App.Services;
 
 /// <summary>Connects the core logic to the UI: tray icon and flyout, keyboard handling, settings window.</summary>
-internal sealed class AppShell(TrayIcon trayIcon) : IAppShell
+internal sealed class AppShell(TrayIcon trayIcon, FlyoutBuilder flyout) : IAppShell
 {
-    public void UpdateMenus() => trayIcon.Refresh();
+    public void UpdateMenus() => flyout.UpdateMenus();
 
     public void UpdateKeyboard()
     {

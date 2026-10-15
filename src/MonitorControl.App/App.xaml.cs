@@ -62,8 +62,11 @@ public partial class App : Application
         _displayManager = new DisplayManager(prefs, state, _platform, _shades, new NullOsd(), ui, new Alerts());
         _controller = new AppController(prefs, state, _displayManager, ui, new Alerts(), BuildNumber);
 
-        _trayIcon = new TrayIcon(onQuit: Quit);
-        _controller.Shell = new AppShell(_trayIcon);
+        var actions = new FlyoutActions(OpenSettings, CheckForUpdates, Quit);
+        var flyoutWindow = new FlyoutWindow();
+        _trayIcon = new TrayIcon(flyoutWindow, actions);
+        var flyout = new FlyoutBuilder(flyoutWindow, _displayManager, state, actions, _trayIcon.SetVisible);
+        _controller.Shell = new AppShell(_trayIcon, flyout);
 
         _messageWindow = new MessageWindow();
         _systemEvents = new SystemEventsMonitor(ui, _messageWindow);
@@ -72,7 +75,31 @@ public partial class App : Application
         _systemEvents.DisplaysChanged += (_, _) => _controller.DisplayReconfigured();
 
         _controller.Start(safeMode);
+#if DEBUG
+        DebugPreview(Environment.GetCommandLineArgs());
+#endif
     }
+
+#if DEBUG
+    /// <summary>Development aid: <c>--ui-preview flyout</c> opens a window right after startup (screenshots, manual checks).</summary>
+    private void DebugPreview(string[] args)
+    {
+        var index = Array.IndexOf(args, "--ui-preview");
+        if (index < 0 || index + 1 >= args.Length)
+        {
+            return;
+        }
+
+        var target = args[index + 1];
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (target == "flyout")
+            {
+                _trayIcon?.OpenFlyout();
+            }
+        }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+    }
+#endif
 
     protected override void OnExit(ExitEventArgs e)
     {
@@ -81,6 +108,14 @@ public partial class App : Application
     }
 
     public void Quit() => Shutdown();
+
+    private void OpenSettings()
+    {
+    }
+
+    private void CheckForUpdates()
+    {
+    }
 
     private void ShutdownServices()
     {
@@ -119,7 +154,12 @@ public partial class App : Application
                 default: SerilogLog.Error(exception, message); break;
             }
         };
-        DispatcherUnhandledException += (_, args) => OnFatalError(args.Exception);
+        DispatcherUnhandledException += (_, args) =>
+        {
+            // A UI glitch must not kill a background utility: log it and keep running.
+            SerilogLog.Error(args.Exception, "Unhandled UI exception");
+            args.Handled = true;
+        };
         AppDomain.CurrentDomain.UnhandledException += (_, args) => OnFatalError(args.ExceptionObject as Exception);
         TaskScheduler.UnobservedTaskException += (_, args) =>
         {

@@ -1,0 +1,27 @@
+<Window x:Class="MonitorControl.App.UI.Tray.FlyoutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Topmost="True"
+        SizeToContent="WidthAndHeight"
+        ShowActivated="True"
+        Title="MonitorControl">
+  <Border Margin="12"
+          Padding="12,10"
+          CornerRadius="8"
+          BorderThickness="1"
+          Background="{DynamicResource ApplicationBackgroundBrush}"
+          BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}">
+    <Border.Effect>
+      <DropShadowEffect BlurRadius="16" ShadowDepth="2" Opacity="0.25" />
+    </Border.Effect>
+    <StackPanel x:Name="Root" MinWidth="200">
+      <StackPanel x:Name="Blocks" />
+      <Grid x:Name="BottomRow" Margin="0,6,0,0" />
+    </StackPanel>
+  </Border>
+</Window>
