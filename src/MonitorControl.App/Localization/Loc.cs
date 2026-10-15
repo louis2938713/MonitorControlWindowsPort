@@ -62,6 +62,10 @@ public sealed class Loc : INotifyPropertyChanged
 
     public static FlowDirection FlowDirection => Culture.TextInfo.IsRightToLeft ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
 
+    /// <summary>Bindable layout direction of the current language.</summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822", Justification = "Instance property for XAML bindings.")]
+    public FlowDirection Direction => FlowDirection;
+
     /// <summary>Indexer used by XAML bindings: <c>{Binding [Key], Source={x:Static loc:Loc.Instance}}</c>.</summary>
     public string this[string key] => Get(key);
 
@@ -79,7 +83,7 @@ public sealed class Loc : INotifyPropertyChanged
             _ => code,
         });
         Instance.PropertyChanged?.Invoke(Instance, new PropertyChangedEventArgs("Item[]"));
-        Instance.PropertyChanged?.Invoke(Instance, new PropertyChangedEventArgs(nameof(FlowDirection)));
+        Instance.PropertyChanged?.Invoke(Instance, new PropertyChangedEventArgs(nameof(Direction)));
         LanguageChanged?.Invoke(null, EventArgs.Empty);
     }
 

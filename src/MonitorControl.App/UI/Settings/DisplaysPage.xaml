@@ -1,0 +1,136 @@
+<UserControl x:Class="MonitorControl.App.UI.Settings.DisplaysPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MonitorControl.App.Localization">
+  <StackPanel>
+    <TextBlock Style="{StaticResource PageTitle}" Text="{loc:Tr Settings.Tab.Displays}" />
+    <CheckBox Margin="0,0,0,4" Content="{loc:Tr Displays.ShowAdvanced}" IsChecked="{Binding ShowAdvanced}" />
+    <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr Displays.Warning}" Visibility="{Binding ShowAdvanced, Converter={StaticResource BoolToVisibility}}" />
+
+    <ItemsControl ItemsSource="{Binding Displays}" Margin="0,8,0,0">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Border Style="{StaticResource Card}">
+            <StackPanel>
+              <!-- Header: icon, editable friendly name -->
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock FontFamily="{StaticResource IconFont}" FontSize="32" Margin="0,0,14,0" VerticalAlignment="Center"
+                           Text="{Binding Description.Glyph}" Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                <TextBox Grid.Column="1" FontSize="16" VerticalAlignment="Center" Text="{Binding FriendlyName, UpdateSourceTrigger=LostFocus}" />
+                <Button Grid.Column="2" Margin="8,0,0,0" Content="{loc:Tr Displays.ResetName}" Command="{Binding ResetNameCommand}" />
+              </Grid>
+
+              <Grid Margin="0,12,0,8">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" MinWidth="150" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.Identifier}" />
+                <TextBlock Grid.Column="1" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Identifier}" />
+                <TextBlock Grid.Row="1" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.DisplayType}" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Description.Type}" />
+                <TextBlock Grid.Row="2" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.ControlMethod}" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Description.Method}"
+                           ToolTip="{Binding Description.Status}" TextDecorations="Underline" Cursor="Help" />
+              </Grid>
+              <TextBlock Style="{StaticResource HelpFlush}" Text="{Binding Description.Status}" />
+
+              <CheckBox Content="{loc:Tr Displays.Enabled}" IsChecked="{Binding Enabled}" />
+              <CheckBox Content="{loc:Tr Displays.Ddc}" IsChecked="{Binding Ddc}" IsEnabled="{Binding CanUseDdc}" />
+              <CheckBox Content="{loc:Tr Displays.AvoidGamma}" IsChecked="{Binding AvoidGamma}" IsEnabled="{Binding CanAvoidGamma}" />
+              <CheckBox Content="{loc:Tr Displays.HideOsd}" IsChecked="{Binding HideOsd}" IsEnabled="{Binding CanHideOsd}" />
+
+              <!-- Advanced -->
+              <StackPanel Margin="0,12,0,0" Visibility="{Binding ShowAdvanced, Converter={StaticResource BoolToVisibility}}">
+                <Separator Margin="0,0,0,10" />
+                <StackPanel IsEnabled="{Binding AdvancedEnabled}">
+                  <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{loc:Tr Displays.PollingMode}" />
+                    <ComboBox MinWidth="140" SelectedIndex="{Binding PollingModeIndex}">
+                      <ComboBoxItem Content="{loc:Tr Displays.Polling.None}" />
+                      <ComboBoxItem Content="{loc:Tr Displays.Polling.Minimal}" />
+                      <ComboBoxItem Content="{loc:Tr Displays.Polling.Normal}" />
+                      <ComboBoxItem Content="{loc:Tr Displays.Polling.Heavy}" />
+                      <ComboBoxItem Content="{loc:Tr Displays.Polling.Custom}" />
+                    </ComboBox>
+                    <TextBlock VerticalAlignment="Center" Margin="16,0,8,0" Text="{loc:Tr Displays.PollingCount}" />
+                    <TextBox Width="64" Text="{Binding PollingCount, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding PollingCountEnabled}" />
+                  </StackPanel>
+                  <CheckBox Margin="0,8,0,2" Content="{loc:Tr Displays.LongerDelay}" IsChecked="{Binding LongerDelay}" />
+                  <CheckBox Content="{loc:Tr Displays.EnableMute}" IsChecked="{Binding EnableMute}" />
+
+                  <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{loc:Tr Displays.SwitchingPoint}" />
+                    <Slider Width="220" Minimum="-8" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding SwitchingPoint}" />
+                    <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.SwitchingPointText}" />
+                  </StackPanel>
+
+                  <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{loc:Tr Displays.AudioOverride}" />
+                    <TextBox Width="260" Text="{Binding AudioDeviceNameOverride, UpdateSourceTrigger=LostFocus}" />
+                    <Button Margin="8,0,0,0" Content="{loc:Tr Displays.GetCurrent}" Command="{Binding GetCurrentAudioNameCommand}" />
+                  </StackPanel>
+                </StackPanel>
+
+                <!-- Per command table -->
+                <Grid Margin="0,14,0,4">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="1" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.Available}" />
+                  <TextBlock Grid.Column="2" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.DdcMin}" />
+                  <TextBlock Grid.Column="3" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.DdcMax}" />
+                  <TextBlock Grid.Column="4" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.Curve}" />
+                  <TextBlock Grid.Column="5" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.Invert}" />
+                  <TextBlock Grid.Column="6" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.Remap}" />
+                </Grid>
+                <ItemsControl ItemsSource="{Binding Rows}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="100" />
+                          <ColumnDefinition Width="80" />
+                          <ColumnDefinition Width="80" />
+                          <ColumnDefinition Width="80" />
+                          <ColumnDefinition Width="140" />
+                          <ColumnDefinition Width="60" />
+                          <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Label}" />
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Available}" IsEnabled="{Binding AvailableEnabled}" />
+                        <TextBox Grid.Column="2" Margin="0,0,8,0" Text="{Binding MinDdc, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DdcEnabled}" />
+                        <TextBox Grid.Column="3" Margin="0,0,8,0" Text="{Binding MaxDdc, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DdcEnabled}" />
+                        <Slider Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0" Minimum="1" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Curve}" IsEnabled="{Binding DdcEnabled}" />
+                        <CheckBox Grid.Column="5" VerticalAlignment="Center" IsChecked="{Binding Invert}" IsEnabled="{Binding DdcEnabled}" />
+                        <TextBox Grid.Column="6" Text="{Binding Remap, UpdateSourceTrigger=LostFocus}" IsEnabled="{Binding DdcEnabled}" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+
+              <Button Margin="0,12,0,0" HorizontalAlignment="Left" Content="{loc:Tr Displays.ResetSettings}" Command="{Binding ResetSettingsCommand}" />
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </StackPanel>
+</UserControl>

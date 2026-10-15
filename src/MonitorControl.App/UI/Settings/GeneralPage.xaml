@@ -1,0 +1,51 @@
+<UserControl x:Class="MonitorControl.App.UI.Settings.GeneralPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MonitorControl.App.Localization">
+  <StackPanel>
+    <TextBlock Style="{StaticResource PageTitle}" Text="{loc:Tr Settings.Tab.General}" />
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <CheckBox Content="{loc:Tr General.StartAtLogin}" IsChecked="{Binding StartAtLogin}" />
+        <CheckBox Content="{loc:Tr General.AutoUpdate}" IsChecked="{Binding AutomaticUpdateCheck}" />
+        <TextBlock Style="{StaticResource Label}" Margin="0,12,0,6" Text="{loc:Tr General.Language}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="260" ItemsSource="{Binding Languages}" SelectedItem="{Binding Language}" DisplayMemberPath="Name" />
+      </StackPanel>
+    </Border>
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <TextBlock Style="{StaticResource Label}" Text="{loc:Tr General.StartupAction}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="360" SelectedIndex="{Binding StartupAction}">
+          <ComboBoxItem Content="{loc:Tr General.StartupAction.DoNothing}" />
+          <ComboBoxItem Content="{loc:Tr General.StartupAction.Write}" />
+          <ComboBoxItem Content="{loc:Tr General.StartupAction.Read}" />
+        </ComboBox>
+        <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr General.StartupAction.DoNothingText}" Visibility="{Binding IsDoNothing, Converter={StaticResource BoolToVisibility}}" />
+        <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr General.StartupAction.WriteText}" Visibility="{Binding IsWrite, Converter={StaticResource BoolToVisibility}}" />
+        <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr General.StartupAction.ReadText}" Visibility="{Binding IsRead, Converter={StaticResource BoolToVisibility}}" />
+      </StackPanel>
+    </Border>
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <CheckBox Content="{loc:Tr General.Combined}" IsChecked="{Binding CombinedBrightness}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr General.CombinedText}" />
+        <CheckBox Content="{loc:Tr General.AllowZero}" IsChecked="{Binding AllowZeroSwBrightness}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr General.AllowZeroText}" />
+        <CheckBox Content="{loc:Tr General.Smooth}" IsChecked="{Binding SmoothBrightness}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr General.SmoothText}" />
+        <CheckBox Content="{loc:Tr General.Sync}" IsChecked="{Binding BrightnessSync}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr General.SyncText}" />
+      </StackPanel>
+    </Border>
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <Button HorizontalAlignment="Left" Content="{loc:Tr General.Reset}" Command="{Binding ResetSettingsCommand}" />
+        <TextBlock Style="{StaticResource HelpFlush}" Margin="0,10,0,0" Text="{loc:Tr General.SafeModeNote}" />
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

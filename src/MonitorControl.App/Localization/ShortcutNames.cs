@@ -69,6 +69,15 @@ internal static class ShortcutNames
         var lParam = (int)((scanCode << 16) | (extended ? 1u << 24 : 0));
         Span<char> buffer = stackalloc char[64];
         var length = PInvoke.GetKeyNameText(lParam, buffer);
-        return length > 0 ? new string(buffer[..length]) : fallback;
+        if (length <= 0)
+        {
+            return fallback;
+        }
+
+        // Layouts report "CTRL", "MAJ"…: show them like Windows does ("Ctrl", "Maj").
+        var name = new string(buffer[..length]);
+        return name.Length > 1 && name.All(c => !char.IsLower(c))
+            ? name[0] + name[1..].ToLower(System.Globalization.CultureInfo.CurrentCulture)
+            : name;
     }
 }

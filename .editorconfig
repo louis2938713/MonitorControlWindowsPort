@@ -63,3 +63,6 @@ dotnet_diagnostic.CA1707.severity = none   # Underscores allowed in test names
 dotnet_diagnostic.CA1848.severity = none   # Serilog, not LoggerMessage
 dotnet_diagnostic.CA1716.severity = none   # VB keyword clashes are irrelevant here
 dotnet_diagnostic.CA1720.severity = none   # Typed getters (Int, Float, String) are intentional
+
+[src/MonitorControl.App/UI/**.cs]
+dotnet_diagnostic.CA1822.severity = none   # View model members are bound from XAML

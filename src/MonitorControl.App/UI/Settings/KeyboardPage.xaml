@@ -1,0 +1,107 @@
+<UserControl x:Class="MonitorControl.App.UI.Settings.KeyboardPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MonitorControl.App.Localization"
+             xmlns:input="clr-namespace:MonitorControl.Core.Input;assembly=MonitorControl.Core"
+             xmlns:local="clr-namespace:MonitorControl.App.UI.Settings">
+  <StackPanel>
+    <TextBlock Style="{StaticResource PageTitle}" Text="{loc:Tr Settings.Tab.Keyboard}" />
+
+    <!-- Brightness -->
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <TextBlock Style="{StaticResource Label}" Text="{loc:Tr Keyboard.BrightnessControl}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="320" SelectedIndex="{Binding KeyboardBrightness}">
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Media}" />
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Custom}" />
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Both}" />
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Disabled}" />
+        </ComboBox>
+        <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr Keyboard.MediaBrightnessText}" Visibility="{Binding ShowAltKeysOption, Converter={StaticResource BoolToVisibility}}" />
+        <StackPanel Visibility="{Binding ShowAltKeysOption, Converter={StaticResource BoolToVisibility}}">
+          <CheckBox Content="{loc:Tr Keyboard.DisableAltKeys}" IsChecked="{Binding DisableAltBrightnessKeys}" />
+          <TextBlock Style="{StaticResource Help}" Text="{loc:Tr Keyboard.DisableAltKeysText}" />
+        </StackPanel>
+
+        <Grid Margin="0,8,0,0" Visibility="{Binding ShowBrightnessShortcuts, Converter={StaticResource BoolToVisibility}}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="110" />
+            <ColumnDefinition Width="170" />
+            <ColumnDefinition Width="170" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBlock VerticalAlignment="Center" Text="{loc:Tr Keyboard.ShortcutBrightness}" />
+          <local:ShortcutRecorder Grid.Column="1" Margin="4" Shortcut="{x:Static input:ShortcutName.BrightnessUp}" Placeholder="{loc:Tr Keyboard.Increase}" />
+          <local:ShortcutRecorder Grid.Column="2" Margin="4" Shortcut="{x:Static input:ShortcutName.BrightnessDown}" Placeholder="{loc:Tr Keyboard.Decrease}" />
+          <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="{loc:Tr Keyboard.ShortcutContrast}" />
+          <local:ShortcutRecorder Grid.Row="1" Grid.Column="1" Margin="4" Shortcut="{x:Static input:ShortcutName.ContrastUp}" Placeholder="{loc:Tr Keyboard.Increase}" />
+          <local:ShortcutRecorder Grid.Row="1" Grid.Column="2" Margin="4" Shortcut="{x:Static input:ShortcutName.ContrastDown}" Placeholder="{loc:Tr Keyboard.Decrease}" />
+        </Grid>
+
+        <StackPanel Margin="0,12,0,0" IsEnabled="{Binding BrightnessKeysEnabled}">
+          <TextBlock Style="{StaticResource Label}" Text="{loc:Tr Keyboard.ScreenToControl}" />
+          <ComboBox HorizontalAlignment="Left" MinWidth="420" SelectedIndex="{Binding MultiKeyboardBrightness}">
+            <ComboBoxItem Content="{loc:Tr Keyboard.Brightness.Mouse}" />
+            <ComboBoxItem Content="{loc:Tr Keyboard.Brightness.All}" />
+            <ComboBoxItem Content="{loc:Tr Keyboard.Brightness.Focus}" />
+          </ComboBox>
+          <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr Keyboard.Brightness.FocusText}" Visibility="{Binding ShowFocusText, Converter={StaticResource BoolToVisibility}}" />
+          <TextBlock Style="{StaticResource Label}" Margin="0,12,0,6" Text="{loc:Tr Keyboard.OsdScale}" />
+          <CheckBox Content="{loc:Tr Keyboard.FineScaleBrightness}" IsChecked="{Binding UseFineScaleBrightness}" />
+          <TextBlock Style="{StaticResource Help}" Text="{loc:Tr Keyboard.FineScaleText}" />
+          <CheckBox Content="{loc:Tr Keyboard.SeparateScale}" IsChecked="{Binding SeparateCombinedScale}" />
+          <TextBlock Style="{StaticResource Help}" Text="{loc:Tr Keyboard.SeparateScaleText}" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <!-- Volume -->
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <TextBlock Style="{StaticResource Label}" Text="{loc:Tr Keyboard.VolumeControl}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="320" SelectedIndex="{Binding KeyboardVolume}">
+          <ComboBoxItem Content="{loc:Tr Keyboard.VolumeMode.Media}" />
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Custom}" />
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Both}" />
+          <ComboBoxItem Content="{loc:Tr Keyboard.Mode.Disabled}" />
+        </ComboBox>
+
+        <Grid Margin="0,8,0,0" Visibility="{Binding ShowVolumeShortcuts, Converter={StaticResource BoolToVisibility}}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="110" />
+            <ColumnDefinition Width="170" />
+            <ColumnDefinition Width="170" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <TextBlock VerticalAlignment="Center" Text="{loc:Tr Keyboard.ShortcutVolume}" />
+          <local:ShortcutRecorder Grid.Column="1" Margin="4" Shortcut="{x:Static input:ShortcutName.VolumeUp}" Placeholder="{loc:Tr Keyboard.Increase}" />
+          <local:ShortcutRecorder Grid.Column="2" Margin="4" Shortcut="{x:Static input:ShortcutName.VolumeDown}" Placeholder="{loc:Tr Keyboard.Decrease}" />
+          <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="{loc:Tr Keyboard.ShortcutMute}" />
+          <local:ShortcutRecorder Grid.Row="1" Grid.Column="1" Margin="4" Shortcut="{x:Static input:ShortcutName.Mute}" Placeholder="{loc:Tr Keyboard.Mute}" />
+        </Grid>
+
+        <StackPanel Margin="0,12,0,0" IsEnabled="{Binding VolumeKeysEnabled}">
+          <TextBlock Style="{StaticResource Label}" Text="{loc:Tr Keyboard.ScreenToControl}" />
+          <ComboBox HorizontalAlignment="Left" MinWidth="420" SelectedIndex="{Binding MultiKeyboardVolume}">
+            <ComboBoxItem Content="{loc:Tr Keyboard.Volume.Mouse}" />
+            <ComboBoxItem Content="{loc:Tr Keyboard.Volume.All}" />
+            <ComboBoxItem Content="{loc:Tr Keyboard.Volume.AudioName}" />
+          </ComboBox>
+          <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr Keyboard.Volume.MouseText}" Visibility="{Binding ShowAudioMouseText, Converter={StaticResource BoolToVisibility}}" />
+          <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr Keyboard.Volume.AudioNameText}" Visibility="{Binding ShowAudioNameText, Converter={StaticResource BoolToVisibility}}" />
+          <TextBlock Style="{StaticResource Label}" Margin="0,12,0,6" Text="{loc:Tr Keyboard.OsdScale}" />
+          <CheckBox Content="{loc:Tr Keyboard.FineScaleVolume}" IsChecked="{Binding UseFineScaleVolume}" />
+          <CheckBox Content="{loc:Tr Keyboard.PlayFeedback}" IsChecked="{Binding PlayVolumeFeedback}" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr Keyboard.ShortcutsText}" />
+  </StackPanel>
+</UserControl>

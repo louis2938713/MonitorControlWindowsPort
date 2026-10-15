@@ -1,0 +1,66 @@
+<UserControl x:Class="MonitorControl.App.UI.Settings.AppMenuPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MonitorControl.App.Localization">
+  <StackPanel>
+    <TextBlock Style="{StaticResource PageTitle}" Text="{loc:Tr Settings.Tab.AppMenu}" />
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <TextBlock Style="{StaticResource Label}" Text="{loc:Tr AppMenu.Icon}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="320" SelectedIndex="{Binding MenuIconIndex}">
+          <ComboBoxItem Content="{loc:Tr AppMenu.Icon.Show}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.Icon.SliderOnly}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.Icon.ExternalOnly}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.Icon.Hide}" />
+        </ComboBox>
+        <TextBlock Style="{StaticResource Label}" Margin="0,12,0,6" Text="{loc:Tr AppMenu.ItemStyle}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="320" SelectedIndex="{Binding MenuItemStyle}">
+          <ComboBoxItem Content="{loc:Tr AppMenu.ItemStyle.Icon}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.ItemStyle.Text}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.ItemStyle.Hide}" />
+        </ComboBox>
+        <StackPanel Margin="0,12,0,0" Visibility="{Binding ShowQuitRow, Converter={StaticResource BoolToVisibility}}">
+          <Button HorizontalAlignment="Left" Content="{loc:Tr AppMenu.QuitApplication}" Command="{Binding QuitCommand}" />
+          <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr AppMenu.QuitText}" />
+        </StackPanel>
+      </StackPanel>
+    </Border>
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <CheckBox Content="{loc:Tr AppMenu.ShowBrightness}" IsChecked="{Binding ShowBrightness}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr AppMenu.ShowBrightnessText}" />
+        <CheckBox Margin="28,2,0,2" Content="{loc:Tr AppMenu.ShowBuiltIn}" IsChecked="{Binding ShowBuiltIn}" IsEnabled="{Binding ShowBrightness}" />
+        <TextBlock Style="{StaticResource Help}" Margin="56,0,0,10" Text="{loc:Tr AppMenu.ShowBuiltInText}" />
+        <CheckBox Content="{loc:Tr AppMenu.ShowVolume}" IsChecked="{Binding ShowVolume}" />
+        <CheckBox Content="{loc:Tr AppMenu.ShowContrast}" IsChecked="{Binding ShowContrast}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr AppMenu.DdcOnlyText}" />
+      </StackPanel>
+    </Border>
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <TextBlock Style="{StaticResource Label}" Text="{loc:Tr AppMenu.MultipleDisplays}" />
+        <ComboBox HorizontalAlignment="Left" MinWidth="420" SelectedIndex="{Binding MultiSliders}">
+          <ComboBoxItem Content="{loc:Tr AppMenu.MultiSliders.Separate}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.MultiSliders.Relevant}" />
+          <ComboBoxItem Content="{loc:Tr AppMenu.MultiSliders.Combine}" />
+        </ComboBox>
+        <TextBlock Style="{StaticResource HelpFlush}" Text="{loc:Tr AppMenu.MultiSliders.CombineText}" Visibility="{Binding IsCombine, Converter={StaticResource BoolToVisibility}}" />
+      </StackPanel>
+    </Border>
+
+    <Border Style="{StaticResource Card}">
+      <StackPanel>
+        <TextBlock Style="{StaticResource Label}" Text="{loc:Tr AppMenu.SliderBehavior}" />
+        <CheckBox Content="{loc:Tr AppMenu.Snap}" IsChecked="{Binding SliderSnap}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr AppMenu.SnapText}" />
+        <CheckBox Content="{loc:Tr AppMenu.TickMarks}" IsChecked="{Binding TickMarks}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr AppMenu.TickMarksText}" />
+        <CheckBox Content="{loc:Tr AppMenu.Percentages}" IsChecked="{Binding Percentages}" />
+        <TextBlock Style="{StaticResource Help}" Text="{loc:Tr AppMenu.PercentagesText}" />
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\AppIcon.ico" />
+    <Resource Include="Assets\AppIcon.png" />
     <EmbeddedResource Include="Localization\Strings\*.json" LogicalName="Strings.%(Filename).json" />
   </ItemGroup>
 

@@ -5,7 +5,9 @@ using System.Windows.Input;
 using MonitorControl.App.Localization;
 using MonitorControl.App.Platform;
 using MonitorControl.App.Services;
+using MonitorControl.App.UI;
 using MonitorControl.App.UI.Osd;
+using MonitorControl.App.UI.Settings;
 using MonitorControl.App.UI.Tray;
 using MonitorControl.Core;
 using MonitorControl.Core.Displays;
@@ -35,6 +37,8 @@ public partial class App : Application
     private AppShell? _shell;
     private AudioService? _audio;
     private KeyboardService? _keyboard;
+    private Prefs? _prefs;
+    private SettingsWindow? _settingsWindow;
     private bool _shutDown;
 
     /// <summary>Build number of this version (settings migration).</summary>
@@ -59,6 +63,7 @@ public partial class App : Application
         var safeMode = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
         _settings = new JsonSettingsStore(SettingsPath);
         var prefs = new Prefs(_settings);
+        _prefs = prefs;
         Loc.SetLanguage(prefs.String(PrefKey.Language));
         ApplicationThemeManager.ApplySystemTheme();
 
@@ -88,6 +93,8 @@ public partial class App : Application
             Loc.T("App.Name"),
             Loc.F("Notification.ShortcutConflicts", string.Join(", ", names.Select(n => ShortcutNames.Display(n)))));
         _shell.Keyboard = _keyboard;
+        _shell.DisplaySettingsReload = () => _settingsWindow?.Displays.LoadDisplayList();
+        _displayManager.DisplaySettingsChanged += (_, _) => _settingsWindow?.Displays.LoadDisplayList();
         flyoutWindow.Opening += (_, _) => _keyboard.ShortcutManager.Disengage();
         _audio.DefaultOutputChanged += (_, _) => _keyboard.Update();
 
@@ -97,6 +104,11 @@ public partial class App : Application
         _systemEvents.DisplaysChanged += (_, _) => _controller.DisplayReconfigured();
 
         _controller.Start(safeMode);
+        StartupRegistration.Refresh();
+        if (_controller.IsFirstLaunch)
+        {
+            new OnboardingWindow().Show();
+        }
 #if DEBUG
         DebugPreview(Environment.GetCommandLineArgs());
 #endif
@@ -123,6 +135,15 @@ public partial class App : Application
             {
                 _osd?.Show(manager.Displays[0].Id, Command.Brightness, 0.6f, roundChiclet: true);
             }
+            else if (target.StartsWith("settings", StringComparison.Ordinal))
+            {
+                OpenSettings(target.Length > 8 ? target[8] - '0' : 0);
+                _settingsWindow!.Topmost = true;
+            }
+            else if (target == "onboarding")
+            {
+                new OnboardingWindow { Topmost = true }.Show();
+            }
         }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
     }
 #endif
@@ -135,8 +156,30 @@ public partial class App : Application
 
     public void Quit() => Shutdown();
 
-    private void OpenSettings()
+    /// <summary>Opens (or brings to front) the settings window.</summary>
+    public void OpenSettings() => OpenSettings(page: -1);
+
+    private void OpenSettings(int page)
     {
+        if (_settingsWindow is null)
+        {
+            var context = new SettingsContext(_prefs!, _controller!, _displayManager!, _shortcuts!, _keyboard!, _audio!, CheckForUpdates, Quit);
+            _settingsWindow = new SettingsWindow(context);
+            _settingsWindow.Closed += (_, _) => _settingsWindow = null;
+            _settingsWindow.Show();
+        }
+
+        if (page >= 0)
+        {
+            _settingsWindow.ShowPage(page);
+        }
+
+        if (_settingsWindow.WindowState == WindowState.Minimized)
+        {
+            _settingsWindow.WindowState = WindowState.Normal;
+        }
+
+        _settingsWindow.Activate();
     }
 
     private void CheckForUpdates()
