@@ -5,7 +5,7 @@ namespace MonitorControl.App.Localization;
 
 /// <summary>
 /// XAML markup extension for translated text that updates live when the language changes:
-/// <c>Text="{loc:Tr Settings.General.StartAtLogin}"</c>.
+/// <c>Text="{loc:Tr General.StartAtLogin}"</c>.
 /// </summary>
 [MarkupExtensionReturnType(typeof(object))]
 public sealed class TrExtension : MarkupExtension

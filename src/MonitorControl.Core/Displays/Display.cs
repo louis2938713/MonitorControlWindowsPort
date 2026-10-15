@@ -52,8 +52,14 @@ public class Display : IEquatable<Display>
 
     public Dictionary<Command, ISliderHandle> SliderHandler { get; } = [];
 
-    /// <summary>Name shown to the user: the friendly name override, or the display name.</summary>
-    public string FriendlyName => ReadPrefAsString(PrefKey.FriendlyName) is { Length: > 0 } friendly ? friendly : Name;
+    /// <summary>
+    /// Translates generic display names ("Built-in Display", "Unknown") for the UI. The untranslated name stays the
+    /// settings identifier so changing the language does not lose per-display settings.
+    /// </summary>
+    public static Func<string, string> NameLocalizer { get; set; } = name => name;
+
+    /// <summary>Name shown to the user: the friendly name override, or the (localized) display name.</summary>
+    public string FriendlyName => ReadPrefAsString(PrefKey.FriendlyName) is { Length: > 0 } friendly ? friendly : NameLocalizer(Name);
 
     protected DisplayManager Manager { get; }
 

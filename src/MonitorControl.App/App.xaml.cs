@@ -65,6 +65,12 @@ public partial class App : Application
         var prefs = new Prefs(_settings);
         _prefs = prefs;
         Loc.SetLanguage(prefs.String(PrefKey.Language));
+        Display.NameLocalizer = name => name switch
+        {
+            DisplayEnumerator.BuiltInDisplayName => Loc.T("Displays.Type.BuiltIn"),
+            DisplayEnumerator.UnknownDisplayName => Loc.T("Common.Unknown"),
+            _ => name,
+        };
         ApplicationThemeManager.ApplySystemTheme();
 
         var ui = new WpfUiDispatcher(Dispatcher);

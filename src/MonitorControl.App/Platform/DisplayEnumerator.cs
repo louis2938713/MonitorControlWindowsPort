@@ -15,6 +15,11 @@ internal sealed record WinDisplay(DisplayInfo Info, HMONITOR Monitor, int Physic
 /// <summary>Enumerates active displays using the DisplayConfig API, monitor handles and the EDID in the registry.</summary>
 internal static unsafe class DisplayEnumerator
 {
+    /// <summary>Generic names used when the display reports none (translated for the UI only).</summary>
+    public const string BuiltInDisplayName = "Built-in Display";
+
+    public const string UnknownDisplayName = "Unknown";
+
     private const uint ErrorInsufficientBuffer = 122;
 
     public static List<WinDisplay> Enumerate()
@@ -40,7 +45,7 @@ internal static unsafe class DisplayEnumerator
             var isBuiltIn = IsBuiltIn(technology);
             var name = !string.IsNullOrWhiteSpace(friendlyName) ? friendlyName
                 : !string.IsNullOrWhiteSpace(edid?.Name) ? edid!.Name!
-                : isBuiltIn ? "Built-in Display" : "Unknown";
+                : isBuiltIn ? BuiltInDisplayName : UnknownDisplayName;
             var rawName = !string.IsNullOrWhiteSpace(edid?.Name) ? edid!.Name! : name;
             var id = StableId(devicePath.Length > 0 ? devicePath : $"{gdiName}#{path.targetInfo.id}");
             var isVirtual = IsVirtual(technology);
