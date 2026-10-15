@@ -1,4 +1,4 @@
-root = true
+﻿root = true
 
 [*]
 charset = utf-8
@@ -29,6 +29,14 @@ dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 
+# Private static readonly fields stay PascalCase
+dotnet_naming_rule.private_static_readonly.severity = warning
+dotnet_naming_rule.private_static_readonly.symbols = private_static_readonly
+dotnet_naming_rule.private_static_readonly.style = pascal
+dotnet_naming_symbols.private_static_readonly.applicable_kinds = field
+dotnet_naming_symbols.private_static_readonly.applicable_accessibilities = private
+dotnet_naming_symbols.private_static_readonly.required_modifiers = static, readonly
+
 # Naming: private fields _camelCase
 dotnet_naming_rule.private_fields.severity = warning
 dotnet_naming_rule.private_fields.symbols = private_fields
@@ -53,3 +61,5 @@ dotnet_diagnostic.CA1515.severity = none   # WPF types must be public for XAML
 dotnet_diagnostic.CA1303.severity = none   # Localization handled by our own system
 dotnet_diagnostic.CA1707.severity = none   # Underscores allowed in test names
 dotnet_diagnostic.CA1848.severity = none   # Serilog, not LoggerMessage
+dotnet_diagnostic.CA1716.severity = none   # VB keyword clashes are irrelevant here
+dotnet_diagnostic.CA1720.severity = none   # Typed getters (Int, Float, String) are intentional
