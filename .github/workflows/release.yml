@@ -1,0 +1,100 @@
+name: Release
+
+# Push a tag like v4.4.0 (or v4.5.0-beta.1 for a pre-release) to build and publish a GitHub release
+# with installers (Setup.exe), portable zips and Velopack update packages for x64 and ARM64.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  VPK_VERSION: 1.2.161
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+
+      - name: Version
+        id: version
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "prerelease=$(if ($version.Contains('-')) { 'true' } else { 'false' })" >> $env:GITHUB_OUTPUT
+
+      - name: Restore
+        run: dotnet restore MonitorControl.Windows.slnx --locked-mode
+
+      - name: Test
+        run: dotnet test --solution MonitorControl.Windows.slnx -c Release --no-restore
+
+      - name: Publish
+        shell: pwsh
+        run: |
+          foreach ($rid in 'win-x64', 'win-arm64') {
+            dotnet publish src/MonitorControl.App/MonitorControl.App.csproj -c Release -r $rid --self-contained `
+              -p:Version=${{ steps.version.outputs.version }} -o publish/$rid
+          }
+
+      # ---- Code signing (Phase 11, disabled until the SignPath Foundation account exists) ----
+      # Enable by setting the repository variable ENABLE_SIGNING=true and the SignPath secrets/variables.
+      - name: Upload unsigned binaries
+        if: vars.ENABLE_SIGNING == 'true'
+        id: unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned
+          path: publish
+
+      - name: Sign binaries (SignPath)
+        if: vars.ENABLE_SIGNING == 'true'
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG }}
+          github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: publish
+      # -----------------------------------------------------------------------------------------
+
+      - name: Package
+        shell: pwsh
+        run: |
+          dotnet tool install -g vpk --version $env:VPK_VERSION
+          foreach ($rid in 'win-x64', 'win-arm64') {
+            vpk pack --packId MonitorControl --packVersion ${{ steps.version.outputs.version }} --packDir publish/$rid `
+              --mainExe MonitorControl.exe --packTitle MonitorControl --packAuthors MonitorControl `
+              --icon src/MonitorControl.App/Assets/AppIcon.ico --runtime $rid --channel $rid --outputDir releases
+          }
+
+      - name: Checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem releases -File | Where-Object Extension -in '.exe', '.zip', '.nupkg' | ForEach-Object {
+            "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
+          } | Set-Content releases/SHA256SUMS.txt -Encoding utf8
+          Get-Content releases/SHA256SUMS.txt
+
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $common = @('--outputDir', 'releases', '--repoUrl', "https://github.com/${{ github.repository }}", '--token', $env:GH_TOKEN,
+                      '--tag', '${{ github.ref_name }}', '--releaseName', 'MonitorControl ${{ steps.version.outputs.version }}', '--publish')
+          if ('${{ steps.version.outputs.prerelease }}' -eq 'true') { $common += '--pre' }
+          vpk upload github @common --channel win-x64
+          vpk upload github @common --channel win-arm64 --merge
+          gh release upload '${{ github.ref_name }}' releases/SHA256SUMS.txt --clobber

@@ -39,6 +39,7 @@ public partial class App : Application
     private KeyboardService? _keyboard;
     private Prefs? _prefs;
     private SettingsWindow? _settingsWindow;
+    private UpdateService? _updates;
     private bool _shutDown;
 
     /// <summary>Build number of this version (settings migration).</summary>
@@ -111,6 +112,8 @@ public partial class App : Application
 
         _controller.Start(safeMode);
         StartupRegistration.Refresh();
+        _updates = new UpdateService(prefs, beforeRestart: ShutdownServices);
+        _updates.Start();
         if (_controller.IsFirstLaunch)
         {
             new OnboardingWindow().Show();
@@ -188,9 +191,7 @@ public partial class App : Application
         _settingsWindow.Activate();
     }
 
-    private void CheckForUpdates()
-    {
-    }
+    private void CheckForUpdates() => _ = _updates?.CheckAsync(userInitiated: true);
 
     private void ShutdownServices()
     {
@@ -206,6 +207,7 @@ public partial class App : Application
         }
         finally
         {
+            _updates?.Dispose();
             _systemEvents?.Dispose();
             _keyboard?.Dispose();
             _audio?.Dispose();

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "dependencies": {
-    "net10.0-windows10.0.19041": {
+    "net10.0-windows7.0": {
       "CommunityToolkit.Mvvm": {
         "type": "Direct",
         "requested": "[8.4.2, )",
@@ -57,6 +57,12 @@
         "requested": "[10.0.13, )",
         "resolved": "10.0.13",
         "contentHash": "cL8qiJmJtlSIcAoZH4s07VTxTdddvEP12MFeM+KBZagn4CuD/0SFQsmKn5g9MLfiSrYjdAxIwOTO0kATY9A0UA=="
+      },
+      "Velopack": {
+        "type": "Direct",
+        "requested": "[1.2.161, )",
+        "resolved": "1.2.161",
+        "contentHash": "OpHNacIumnkhaaX3ZlQ/TCR4YPOJvud2/PAOoWb6o+mIrLwIVA275I5wAgt4q/1O2VrJeDwR1qFQyqzG4lUArg=="
       },
       "WPF-UI": {
         "type": "Direct",
@@ -120,7 +126,7 @@
         "type": "Project"
       }
     },
-    "net10.0-windows10.0.19041/win-arm64": {
+    "net10.0-windows7.0/win-arm64": {
       "System.Management": {
         "type": "Direct",
         "requested": "[10.0.13, )",
@@ -128,7 +134,7 @@
         "contentHash": "cL8qiJmJtlSIcAoZH4s07VTxTdddvEP12MFeM+KBZagn4CuD/0SFQsmKn5g9MLfiSrYjdAxIwOTO0kATY9A0UA=="
       }
     },
-    "net10.0-windows10.0.19041/win-x64": {
+    "net10.0-windows7.0/win-x64": {
       "System.Management": {
         "type": "Direct",
         "requested": "[10.0.13, )",

@@ -1,142 +1,94 @@
-<img src=".github/Icon-cropped.png" width="200" alt="App icon" align="left"/>
+<img src=".github/Icon-cropped.png" width="160" alt="App icon" align="left"/>
 
 <div>
-<h3>MonitorControl</h3>
-<p>Controls your external display brightness and volume and shows native OSD.
-Use menubar extra sliders or the keyboard, including native Apple keys!</p>
-<a href="https://github.com/MonitorControl/MonitorControl/releases"><img src=".github/macos_badge_noborder.png" width="175" alt="Download for macOS"/></a>
+<h3>MonitorControl for Windows</h3>
+<p>Control the brightness, contrast and volume of your external displays from the notification area or the keyboard,
+with an on-screen display. A Windows port of <a href="https://github.com/MonitorControl/MonitorControl">MonitorControl</a> for macOS.</p>
 </div>
 
-<br/><br/>
+<br clear="left"/>
 
-<div align="center">
-<a href="https://github.com/MonitorControl/MonitorControl/releases"><img src="https://img.shields.io/github/downloads/MonitorControl/MonitorControl/total.svg?style=flat" alt="downloads"/></a>
-<a href="https://github.com/MonitorControl/MonitorControl/releases"><img src="https://img.shields.io/github/release-pre/MonitorControl/MonitorControl.svg?style=flat" alt="latest version"/></a>
-<a href="https://github.com/MonitorControl/MonitorControl/blob/master/License.txt"><img src="https://img.shields.io/github/license/MonitorControl/MonitorControl.svg?style=flat" alt="license"/></a>
-<a href="https://github.com/MonitorControl/MonitorControl"><img src="https://img.shields.io/badge/platform-macOS-blue.svg?style=flat" alt="platform"/></a>
+## Features
 
-<br/>
-<br/>
+- Brightness, contrast and volume of external displays through **DDC/CI** (DisplayPort, HDMI, USB-C, DVI, VGA).
+- Brightness of the **built-in display** of laptops (native Windows brightness).
+- **Software dimming** (gamma table, or a dimming overlay for virtual displays, HDR and unsupported cases) for displays and TVs without DDC.
+- **Combined dimming**: software dimming takes over below the minimum hardware brightness, down to full black if you allow it.
+- **Smooth** brightness transitions, **sync** of laptop brightness changes (adaptive brightness, Fn keys, Quick Settings) to external displays.
+- Sliders in the notification area: one block per display, only the display under the mouse, or one combined slider for all.
+- **Keyboard**: universal default shortcuts, volume/mute keys, brightness keys of external keyboards, Scroll Lock / Pause, custom shortcuts.
+- Windows 11 style **OSD**.
+- Dozens of advanced options per display (polling, DDC min/max, scale curve, inversion, VCP code remapping…).
+- 20 languages, light and dark themes, automatic updates. Free and open source.
 
-<img src=".github/screenshot.png" width="824" alt="Screenshot"/><br/>
+## Install
 
-</div>
+1. Download `MonitorControl-win-x64-Setup.exe` (or `win-arm64` for ARM PCs) from [Releases](../../releases).
+2. Run it. No administrator rights are needed. The app installs for the current user and updates itself.
+3. The MonitorControl icon (a sun) appears in the notification area — it may be in the hidden icons (`^`). Drag it to the taskbar to keep it visible.
 
-<hr>
+A portable zip is also available. Releases are currently **not code signed**, so Windows SmartScreen may warn on first launch
+(*More info → Run anyway*). SHA-256 checksums are published with every release (`SHA256SUMS.txt`).
 
-## Download
+Requirements: Windows 10 (21H2 or later) or Windows 11, x64 or ARM64.
 
-Go to [Releases](https://github.com/MonitorControl/MonitorControl/releases) and download the latest `.dmg`, or you can install via Homebrew:
-```shell
-brew install --cask monitorcontrol
-```
+## Usage
 
-## Major features
+- **Left click** the icon for the sliders, **right click** for Settings, updates and Quit.
+- Launching MonitorControl again opens its settings (useful if you chose to hide the icon).
+- Default shortcuts (change them in *Settings > Keyboard*):
 
-- Control your display's brightness, volume and contrast!
-- Shows native OSD for brightness and volume.
-- Supports multiple protocols to adjust brightness: DDC for external displays (brightness, contrast, volume), native Apple protocol for Apple and built-in displays, Gamma table control for software dimming, shade control for AirPlay, Sidecar and Display Link devices and other virtual screens.
-- Supports smooth brightness transitions.
-- Seamlessly combined hardware and software dimming extends dimming beyond the minimum brightness available on your display.
-- Synchronize brightness from built-in and Apple screens - replicate Ambient light sensor and touch bar induced changes to a non-Apple external display!
-- Sync up all your displays using a single slider or keyboard shortcuts.
-- Allows dimming to full black.
-- Support for custom keyboard shortcuts as well as standard brightness and media keys on Apple keyboards.
-- Dozens of customization options to tweak the inner workings of the app to suit your hardware and needs (don't forget to enable `Show advanced settings` in app Settings).
-- Simple, unobtrusive UI to blend in to the general aesthetics of macOS.
-- Completely FREE.
+| Action | Shortcut |
+|---|---|
+| Brightness up / down | `Ctrl+Alt+↑` / `Ctrl+Alt+↓` |
+| Contrast up / down | `Ctrl+Alt+Shift+↑` / `Ctrl+Alt+Shift+↓` |
+| Volume up / down | `Ctrl+Alt+→` / `Ctrl+Alt+←` |
+| Mute | `Ctrl+Alt+M` |
+| Fine steps | add `Win` to any shortcut |
 
-For additional features, more advanced brightness control with XDR/HDR brightness upscaling and support for more Mac models and displays, check out [BetterDisplay](https://github.com/waydabber/BetterDisplay#readme)!
+- Standard keys: volume/mute keys (when the sound goes to a display), brightness keys of external keyboards, Scroll Lock / Pause.
+  With them: `Ctrl` = built-in display, `Ctrl+Win` = external displays, `Shift+Alt` = fine steps, `Ctrl+Alt+Win` = contrast,
+  `Alt` opens the Windows settings, `Win` + brightness down toggles *Duplicate* / *Extend*.
+- Hold **Shift** while launching for *safe mode* (default settings, no DDC reads).
 
-### Screenshots (Settings)
+## Supported displays
 
-<div align="center">
-<img src=".github/pref_1.png" width="392" alt="Screenshot"/>
-<img src=".github/pref_2.png" width="392" alt="Screenshot"/>
-<img src=".github/pref_3.png" width="392" alt="Screenshot"/>
-<img src=".github/pref_4.png" width="392" alt="Screenshot"/>
-</div>
+- Most LCD/LED monitors support DDC/CI. Make sure it is enabled in the monitor's own menu (often called *DDC/CI*).
+- Built-in laptop panels use the native Windows brightness.
+- TVs, displays behind some docks/adapters/KVMs, DisplayLink, Miracast and Remote Desktop use software dimming.
 
-## How to install and use the app
+## Known limitations
 
-1. [Download the app](https://github.com/MonitorControl/MonitorControl/releases)
-2. Copy the MonitorControl app file from the .dmg file to your Applications folder
-3. Click on the `MonitorControl` app
-4. Add the app to `Accessibility` under `System Settings` » `Privacy & Security` as prompted (this is required only if you wish to use the native Apple keyboard brightness and media keys - if this is not the case, you can safely skip this step).
-5. Use your keyboard or the sliders in the app menu (a brightness symbol in the macOS menubar as shown on the screenshot above) to control your displays.
-6. Open `Settings…` for customization options (enable `Show advanced settings` for even more options).
-7. You can set up custom keyboard shortcuts under the `Keyboard` in Settings (the app uses Apple media keys by default).
-8. If you have any questions, go to [Discussions](https://github.com/MonitorControl/MonitorControl/discussions)!
+- Laptop brightness keys (Fn) are handled by the computer firmware: they change the built-in display; use *sync* to follow them on external displays.
+- Keys are not seen by MonitorControl while a window running as administrator has the focus (Windows security).
+- The dimming overlay does not dim the mouse cursor.
+- Windows may refuse very dark gamma ramps; MonitorControl then switches to the overlay automatically.
 
-### macOS compatibility
+## Troubleshooting
 
-| MonitorControl version | macOS version     |
-| ---------------------- | ----------------- |
-| v4.0.0                 | Catalina 10.15*   |
-| v3.1.1                 | Mojave 10.14      |
-| v2.1.0                 | Sierra 10.12      |
+Run `MonitorControl.exe --diagnose` (from the install folder, `%LocalAppData%\MonitorControl\current`) to get a read-only report of
+your displays and their DDC/CI answers. Logs are in `%LocalAppData%\MonitorControl\logs`, settings in `%AppData%\MonitorControl\settings.json`.
 
-_* With some limitations - full functionality available on macOS 11 Big Sur or newer._
+## Build from source
 
-For macOS 27 Golden Gate compatibility [v4.4.0 or newer](https://github.com/MonitorControl/MonitorControl/releases) is required!
-
-Please note that current versions have limited native macOS OSD support on macOS Tahoe - although the Control Center brightness or volume OSD appears, the OSD percentage value will not show or update.
-
-### Supported displays
-
-- Most modern LCD displays from all major manufacturers supported implemented DDC/CI protocol via USB-C, DisplayPort, HDMI, DVI or VGA to allow for hardware backlight and volume control.
-- Apple displays and built-in displays are supported using native protocols.
-- LCD and LED Televisions usually do not implement DDC, these are supported using software alternatives to dim the image.
-- DisplayLink, Airplay, Sidecar and other virtual screens are supported via shade (overlay) control.
-
-Notable exceptions for hardware control compatibility:
-
-- DDC control using the built-in HDMI port of the 2018 Intel Mac mini, the built-in HDMI port of all M1 Macs (MacBook Pro 14" and 16", Mac Mini, Mac Studio) and the built-in HDMI port of the entry level M2 Mac mini are not supported. Use USB-C instead or get [BetterDisplay](https://betterdisplay.pro) for full DDC control over HDMI with these Macs as well for free. Software-only dimming is still available for these connections.
-- Some displays (notably EIZO) use MCCS over USB or an entirely custom protocol for control. These displays are supported with software dimming only.
-- DisplayLink docks and dongles do not allow for DDC control on Macs, only software dimming is available for these connections.
-
-## Contributing to the project
-
-- If you want, you can fork the code, make improvements and submit a pull request to improve the app. Accepting a PR is solely in the hands of the maintainer - before making fundamental changes expecting it to be accepted, please consult the maintainer of the project!
-
-## How to build
-
-### Required
-
-- Xcode
-- [Swiftlint](https://github.com/realm/SwiftLint)
-- [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
-- [BartyCrouch](https://github.com/Flinesoft/BartyCrouch) (for updating localizations)
-
-### Build steps
-
-- Clone the project via this Terminal command:
+Requirements: Windows, [.NET 10 SDK](https://dotnet.microsoft.com/download).
 
 ```sh
-git clone https://github.com/MonitorControl/MonitorControl.git
+dotnet build MonitorControl.Windows.slnx
+dotnet test --solution MonitorControl.Windows.slnx
+dotnet run --project src/MonitorControl.App
 ```
 
-- If you want to clone one of the branches, add `--single-branch --branch [branchname]` after the `clone` option.
-- You're all set! Now open the `MonitorControl.xcodeproj` with Xcode! The dependencies will automatically get downloaded once you open the project. If they don't: `File > Packages > Resolve Package Versions`
-
-### Third party dependencies
-
-- [MediaKeyTap](https://github.com/MonitorControl/MediaKeyTap)
-- [Settings](https://github.com/sindresorhus/Settings)
-- [SimplyCoreAudio](https://github.com/rnine/SimplyCoreAudio)
-- [KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts)
-- [Sparkle](https://github.com/sparkle-project/Sparkle)
+- `src/MonitorControl.Core` — display logic (no Windows dependency, unit tested).
+- `src/MonitorControl.App` — WPF app and Windows integration (DDC/CI via dxva2, WMI, gamma, keyboard hook, Core Audio).
+- `tools/localization` — translations: `en.json` is the reference; run `dotnet run tools/localization/convert-strings.cs` after changing strings.
+- Releases: push a `vX.Y.Z` tag; `.github/workflows/release.yml` builds and publishes the installers.
 
 ## Credits
 
-- [@waydabber](https://github.com/waydabber), maintainer, developer of [BetterDisplay](https://github.com/waydabber/BetterDisplay#readme).
-- [@the0neyouseek](https://github.com/the0neyouseek) - honorary maintainer
-- [@JoniVR](https://github.com/JoniVR) - honorary maintainer
-- [@alin23](https://github.com/alin23) - spearheaded M1 DDC support, developer of [Lunar](https://lunar.fyi)
-- [@mathew-kurian](https://github.com/mathew-kurian/) (original developer)
-- [@Tyilo](https://github.com/Tyilo/) (fork)
-- [@Bensge](https://github.com/Bensge/) - (used some code from his project [NativeDisplayBrightness](https://github.com/Bensge/NativeDisplayBrightness))
-- [@nhurden](https://github.com/nhurden/) (for the original MediaKeyTap)
-- [@kfix](https://github.com/kfix/ddcctl) (for ddcctl)
-- [@reitermarkus](https://github.com/reitermarkus) (for Intel DDC support)
-- [javierocasio](https://www.deviantart.com/javierocasio) (app icon background)
+MonitorControl is the work of [@waydabber](https://github.com/waydabber) (maintainer, developer of [BetterDisplay](https://github.com/waydabber/BetterDisplay#readme)),
+[@the0neyouseek](https://github.com/the0neyouseek), [@JoniVR](https://github.com/JoniVR), [@alin23](https://github.com/alin23),
+[@mathew-kurian](https://github.com/mathew-kurian/) (original developer) and [all contributors](https://github.com/MonitorControl/MonitorControl/graphs/contributors).
+This Windows port follows the original app's behaviour and reuses its translations.
+
+Licensed under the [MIT License](License.txt).

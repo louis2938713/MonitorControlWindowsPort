@@ -66,7 +66,9 @@ public sealed partial class LocalizationTests
 
         var used = UsedKeyPattern().Matches(allText).Select(m => m.Groups["key"].Value).ToHashSet();
         var unknownKeys = used.Where(k => !english.ContainsKey(k)).ToList();
+        var deadKeys = english.Keys.Where(k => !allText.Contains(k, StringComparison.Ordinal)).ToList();
         Assert.True(unknownKeys.Count == 0, "Keys used but missing from en.json: " + string.Join(", ", unknownKeys));
+        Assert.True(deadKeys.Count == 0, "Keys never used: " + string.Join(", ", deadKeys));
     }
 
     private static Dictionary<string, string> Load(string language)

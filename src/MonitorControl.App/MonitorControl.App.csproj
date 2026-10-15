@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <RootNamespace>MonitorControl.App</RootNamespace>
     <AssemblyName>MonitorControl</AssemblyName>
@@ -21,6 +20,7 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="System.Management" />
+    <PackageReference Include="Velopack" />
     <PackageReference Include="WPF-UI" />
   </ItemGroup>
 
