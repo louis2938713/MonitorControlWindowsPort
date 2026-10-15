@@ -465,7 +465,8 @@ internal sealed partial class DdcCommandRowViewModel(DisplayItemViewModel owner,
 
     public void Load()
     {
-        Available = !Display.ReadPrefAsBool(PrefKey.UnavailableDdc, command);
+        // Like the macOS app, controls that cannot apply to this display are shown unchecked.
+        Available = AvailableEnabled && !Display.ReadPrefAsBool(PrefKey.UnavailableDdc, command);
         if (DdcEnabled)
         {
             MinDdc = Display.PrefExists(PrefKey.MinDdcOverride, command) ? Display.ReadPrefAsString(PrefKey.MinDdcOverride, command) : string.Empty;

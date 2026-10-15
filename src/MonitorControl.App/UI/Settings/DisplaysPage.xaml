@@ -69,29 +69,33 @@
                   <CheckBox Margin="0,8,0,2" Content="{loc:Tr Displays.LongerDelay}" IsChecked="{Binding LongerDelay}" />
                   <CheckBox Content="{loc:Tr Displays.EnableMute}" IsChecked="{Binding EnableMute}" />
 
-                  <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{loc:Tr Displays.SwitchingPoint}" />
+                  <TextBlock Margin="0,12,0,4" Text="{loc:Tr Displays.SwitchingPoint}" />
+                  <StackPanel Orientation="Horizontal">
                     <Slider Width="220" Minimum="-8" Maximum="8" TickFrequency="1" IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding SwitchingPoint}" />
                     <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.SwitchingPointText}" />
                   </StackPanel>
 
-                  <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock VerticalAlignment="Center" Margin="0,0,10,0" Text="{loc:Tr Displays.AudioOverride}" />
-                    <TextBox Width="260" Text="{Binding AudioDeviceNameOverride, UpdateSourceTrigger=LostFocus}" />
-                    <Button Margin="8,0,0,0" Content="{loc:Tr Displays.GetCurrent}" Command="{Binding GetCurrentAudioNameCommand}" />
-                  </StackPanel>
+                  <TextBlock Margin="0,12,0,4" Text="{loc:Tr Displays.AudioOverride}" />
+                  <Grid>
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*" MaxWidth="320" />
+                      <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Text="{Binding AudioDeviceNameOverride, UpdateSourceTrigger=LostFocus}" />
+                    <Button Grid.Column="1" Margin="8,0,0,0" Content="{loc:Tr Displays.GetCurrent}" Command="{Binding GetCurrentAudioNameCommand}" />
+                  </Grid>
                 </StackPanel>
 
                 <!-- Per command table -->
                 <Grid Margin="0,14,0,4">
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="140" />
-                    <ColumnDefinition Width="60" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="92" />
+                    <ColumnDefinition Width="72" />
+                    <ColumnDefinition Width="68" />
+                    <ColumnDefinition Width="68" />
+                    <ColumnDefinition Width="110" />
+                    <ColumnDefinition Width="56" />
+                    <ColumnDefinition Width="*" MinWidth="70" />
                   </Grid.ColumnDefinitions>
                   <TextBlock Grid.Column="1" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.Available}" />
                   <TextBlock Grid.Column="2" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="{loc:Tr Displays.DdcMin}" />
@@ -105,13 +109,13 @@
                     <DataTemplate>
                       <Grid Margin="0,2">
                         <Grid.ColumnDefinitions>
-                          <ColumnDefinition Width="100" />
-                          <ColumnDefinition Width="80" />
-                          <ColumnDefinition Width="80" />
-                          <ColumnDefinition Width="80" />
-                          <ColumnDefinition Width="140" />
-                          <ColumnDefinition Width="60" />
-                          <ColumnDefinition Width="*" />
+                          <ColumnDefinition Width="92" />
+                          <ColumnDefinition Width="72" />
+                          <ColumnDefinition Width="68" />
+                          <ColumnDefinition Width="68" />
+                          <ColumnDefinition Width="110" />
+                          <ColumnDefinition Width="56" />
+                          <ColumnDefinition Width="*" MinWidth="70" />
                         </Grid.ColumnDefinitions>
                         <TextBlock VerticalAlignment="Center" Foreground="{DynamicResource TextFillColorPrimaryBrush}" Text="{Binding Label}" />
                         <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Available}" IsEnabled="{Binding AvailableEnabled}" />

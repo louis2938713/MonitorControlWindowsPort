@@ -64,7 +64,8 @@ public partial class SettingsWindow
         if (Navigation.SelectedItem is NavigationItem item)
         {
             PageHost.Content = item.Page;
-            Scroller.ScrollToTop();
+            // After layout, so focusing a control on the new page cannot leave it scrolled down.
+            Dispatcher.BeginInvoke(Scroller.ScrollToTop, System.Windows.Threading.DispatcherPriority.Loaded);
         }
     }
 

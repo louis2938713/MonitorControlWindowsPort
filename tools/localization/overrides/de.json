@@ -1,7 +1,7 @@
 {
   "Common.Ok": "OK",
   "Alert.ShortcutTaken.Title": "Dieses Tastenkürzel wird bereits von Windows oder einer anderen App verwendet.",
-  "Alert.ShortcutTaken.Message": "Wählen Sie eine andere Kombination.",
+  "Alert.ShortcutTaken.Message": "Wähle eine andere Kombination.",
   "Notification.ShortcutConflicts": "Diese MonitorControl-Tastenkürzel werden auch von einer anderen App verwendet: {0}",
   "Update.Available.Title": "Eine neue Version ist verfügbar",
   "Update.Available.Message": "MonitorControl {0} ist verfügbar (installiert ist {1}). Jetzt installieren? Die App wird neu gestartet.",
@@ -10,7 +10,7 @@
   "Update.UpToDate.Title": "Alles aktuell!",
   "Update.UpToDate.Message": "MonitorControl {0} ist die neueste Version.",
   "Update.NotInstalled": "Updates sind nur verfügbar, wenn MonitorControl mit dem Installationsprogramm installiert wurde.",
-  "Update.Failed": "Die Suche nach Updates ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+  "Update.Failed": "Die Suche nach Updates ist fehlgeschlagen. Bitte versuche es später erneut.",
   "General.Language": "Sprache:",
   "General.LanguageSystem": "Windows-Standard",
   "General.Sync": "Helligkeitsänderungen von integrierten Monitoren synchronisieren",
@@ -19,9 +19,9 @@
   "AppMenu.Icon.Show": "Immer anzeigen",
   "AppMenu.ShowBuiltIn": "Auch für integrierte Monitore anzeigen",
   "AppMenu.ShowBuiltInText": "Integrierte Monitore haben bereits einen Helligkeitsregler in den Windows-Schnelleinstellungen.",
-  "Keyboard.MediaBrightnessText": "Standardtasten sind die Helligkeitstasten externer Tastaturen, die solche haben, sowie Rollen / Pause. Halten Sie Strg gedrückt, um den integrierten Monitor anzupassen, Strg+Win für externe Monitore. Halten Sie Umschalt+Alt für die Feinsteuerung. Strg+Alt+Win ändert den Kontrast bei DDC-kompatiblen Monitoren. Alt öffnet die Windows-Anzeigeeinstellungen.",
+  "Keyboard.MediaBrightnessText": "Standardtasten sind die Helligkeitstasten externer Tastaturen, die solche haben, sowie Rollen / Pause. Halte Strg gedrückt, um den integrierten Monitor anzupassen, Strg+Win für externe Monitore. Halte Umschalt+Alt für die Feinsteuerung. Strg+Alt+Win ändert den Kontrast bei DDC-kompatiblen Monitoren. Alt öffnet die Windows-Anzeigeeinstellungen.",
   "Keyboard.DisableAltKeysText": "Alternative Tasten sind Rollen und Pause (F14/F15 auf Apple-Tastaturen, Helligkeitstasten auf einigen Logitech-Tastaturen).",
-  "Keyboard.ShortcutsText": "Halten Sie zusätzlich Win gedrückt, um fein zu steuern. Die Helligkeitstasten von Laptops (Fn) werden vom Computer selbst verarbeitet und können von Apps nicht verwendet werden.",
+  "Keyboard.ShortcutsText": "Halte zusätzlich Win gedrückt, um fein zu steuern. Die Helligkeitstasten von Laptops (Fn) werden vom Computer selbst verarbeitet und können von Apps nicht verwendet werden.",
   "Keyboard.PressShortcut": "Tastenkürzel drücken",
   "Keyboard.Volume.MouseText": "Funktioniert, wenn die Tonausgabe ein Monitor ist (HDMI- oder DisplayPort-Audio).",
   "Keyboard.PlayFeedback": "Ton bei Lautstärkeänderung abspielen",
@@ -30,7 +30,7 @@
   "Displays.Status.Virtual": "Dies ist ein virtueller Monitor (Beispiele: Miracast, Remotedesktop, ein über ein DisplayLink-Dock o. Ä. angeschlossener Monitor), der weder Hardware- noch Gamma-Steuerung erlaubt. Ersatzweise wird eine Schattierung verwendet, jedoch nur ohne Spiegelung. Der Mauszeiger ist davon nicht betroffen.",
   "Displays.Status.SoftwareOnly": "Dieser Monitor erlaubt nur eine Software-Helligkeitssteuerung über die Gamma-Tabelle oder eine Schattierung, da er keine Hardware-Steuerung unterstützt. Ursachen können der Monitor, das Kabel oder der Adapter, der Grafiktreiber oder ein Dock sein, das DDC/CI nicht weiterleitet.",
   "Displays.Status.Internal": "Dieser integrierte Monitor unterstützt die native Helligkeitssteuerung von Windows. Windows kann ihn auch ohne MonitorControl steuern.",
-  "Onboarding.Description": "Steuern Sie Helligkeit, Kontrast und Lautstärke Ihrer externen Monitore direkt auf Ihrem PC, mit den Reglern im Infobereich oder mit der Tastatur.",
+  "Onboarding.Description": "Steuere Helligkeit, Kontrast und Lautstärke deiner externen Monitore direkt auf deinem PC, mit den Reglern im Infobereich oder mit der Tastatur.",
   "Onboarding.KeysTitle": "Tastenkürzel",
-  "Onboarding.KeysText": "Strg+Alt+↑/↓ ändert die Helligkeit, Strg+Alt+→/← die Lautstärke und Strg+Alt+M schaltet stumm. Sie können sie unter Einstellungen > Tastatur ändern."
+  "Onboarding.KeysText": "Strg+Alt+↑/↓ ändert die Helligkeit, Strg+Alt+→/← die Lautstärke und Strg+Alt+M schaltet stumm. Du kannst sie unter Einstellungen > Tastatur ändern."
 }
