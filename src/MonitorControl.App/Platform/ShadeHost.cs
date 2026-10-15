@@ -55,8 +55,6 @@ internal sealed unsafe class ShadeHost : IShadeHost, IDisposable
         var clamped = Math.Clamp(alpha, 0, 1);
         _shades[displayId] = (window, clamped);
         PInvoke.SetLayeredWindowAttributes(window, new COLORREF(0), (byte)MathF.Round(clamped * 255), LAYERED_WINDOW_ATTRIBUTES_FLAGS.LWA_ALPHA);
-        // Keep the shade above windows that became topmost after it.
-        PInvoke.SetWindowPos(window, Topmost, 0, 0, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOMOVE | SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOACTIVATE);
         return true;
     });
 

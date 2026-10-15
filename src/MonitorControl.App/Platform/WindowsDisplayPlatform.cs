@@ -36,6 +36,8 @@ internal sealed unsafe class WindowsDisplayPlatform : IDisplayPlatform, IDisposa
 
     public PixelRect? BoundsOf(uint displayId) => Find(displayId)?.Info.Bounds;
 
+    public PixelRect? WorkAreaOf(uint displayId) => Find(displayId)?.Info.WorkArea;
+
     public DisplayInfo? InfoOf(uint displayId) => Find(displayId)?.Info;
 
     public IDdcChannel? OpenDdc(uint displayId, bool probe)

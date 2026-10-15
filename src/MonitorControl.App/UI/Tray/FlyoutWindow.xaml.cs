@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using MonitorControl.App.Localization;
+using MonitorControl.App.Platform;
 using MonitorControl.Core.Platform;
 using Windows.Win32;
 using Windows.Win32.Foundation;
@@ -51,43 +52,27 @@ public partial class FlyoutWindow
         FlowDirection = Loc.FlowDirection;
         Opacity = 0;
         Show();
-        UpdateLayout();
-        Position(bounds, workArea, cursorX, cursorY);
+        WindowPlacement.Place(this, workArea, (width, height) =>
+        {
+            if (workArea.Top > bounds.Top)
+            {
+                return (cursorX - (width / 2), workArea.Top); // Taskbar at the top.
+            }
+
+            if (workArea.Left > bounds.Left)
+            {
+                return (workArea.Left, cursorY - (height / 2)); // Taskbar on the left.
+            }
+
+            if (workArea.Right < bounds.Right)
+            {
+                return (workArea.Right - width, cursorY - (height / 2)); // Taskbar on the right.
+            }
+
+            // Taskbar at the bottom (or auto-hidden), like the Windows flyouts.
+            return (cursorX - (width / 2), workArea.Bottom - height);
+        });
         Opacity = 1;
         Activate();
-    }
-
-    private unsafe void Position(PixelRect bounds, PixelRect workArea, int cursorX, int cursorY)
-    {
-        var handle = new WindowInteropHelper(this).Handle;
-        var dpi = VisualTreeHelper.GetDpi(this);
-        var width = (int)Math.Ceiling(ActualWidth * dpi.DpiScaleX);
-        var height = (int)Math.Ceiling(ActualHeight * dpi.DpiScaleY);
-        int x;
-        int y;
-        if (workArea.Top > bounds.Top)
-        {
-            // Taskbar at the top.
-            x = Math.Clamp(cursorX - (width / 2), workArea.Left, workArea.Right - width);
-            y = workArea.Top;
-        }
-        else if (workArea.Left > bounds.Left)
-        {
-            x = workArea.Left;
-            y = Math.Clamp(cursorY - (height / 2), workArea.Top, workArea.Bottom - height);
-        }
-        else if (workArea.Right < bounds.Right)
-        {
-            x = workArea.Right - width;
-            y = Math.Clamp(cursorY - (height / 2), workArea.Top, workArea.Bottom - height);
-        }
-        else
-        {
-            // Taskbar at the bottom (or auto-hidden): bottom right, like the Windows flyouts.
-            x = Math.Clamp(cursorX - (width / 2), workArea.Left, workArea.Right - width);
-            y = workArea.Bottom - height;
-        }
-
-        PInvoke.SetWindowPos(new HWND(handle), HWND.Null, x, y, 0, 0, SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOZORDER | SET_WINDOW_POS_FLAGS.SWP_NOACTIVATE);
     }
 }

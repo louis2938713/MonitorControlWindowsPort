@@ -5,6 +5,7 @@ using System.Windows.Input;
 using MonitorControl.App.Localization;
 using MonitorControl.App.Platform;
 using MonitorControl.App.Services;
+using MonitorControl.App.UI.Osd;
 using MonitorControl.App.UI.Tray;
 using MonitorControl.Core;
 using MonitorControl.Core.Displays;
@@ -28,6 +29,7 @@ public partial class App : Application
     private MessageWindow? _messageWindow;
     private SystemEventsMonitor? _systemEvents;
     private TrayIcon? _trayIcon;
+    private OsdService? _osd;
     private bool _shutDown;
 
     /// <summary>Build number of this version (settings migration).</summary>
@@ -59,7 +61,8 @@ public partial class App : Application
         var state = new AppState();
         _platform = new WindowsDisplayPlatform();
         _shades = new ShadeHost(_platform.BoundsOf);
-        _displayManager = new DisplayManager(prefs, state, _platform, _shades, new NullOsd(), ui, new Alerts());
+        _osd = new OsdService(_platform.WorkAreaOf);
+        _displayManager = new DisplayManager(prefs, state, _platform, _shades, _osd, ui, new Alerts());
         _controller = new AppController(prefs, state, _displayManager, ui, new Alerts(), BuildNumber);
 
         var actions = new FlyoutActions(OpenSettings, CheckForUpdates, Quit);
@@ -96,6 +99,10 @@ public partial class App : Application
             if (target == "flyout")
             {
                 _trayIcon?.OpenFlyout();
+            }
+            else if (target == "osd" && _displayManager is { Displays.Count: > 0 } manager)
+            {
+                _osd?.Show(manager.Displays[0].Id, Command.Brightness, 0.6f, roundChiclet: true);
             }
         }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
     }
@@ -185,25 +192,5 @@ public partial class App : Application
         }
 
         SerilogLog.CloseAndFlush();
-    }
-
-    /// <summary>Placeholder until the OSD is implemented.</summary>
-    private sealed class NullOsd : IOsd
-    {
-        public void Show(uint displayId, Command command, float value, float maxValue = 1, bool roundChiclet = false, bool locked = false)
-        {
-        }
-
-        public void ShowVolumeDisabled(uint displayId)
-        {
-        }
-
-        public void ShowMuteDisabled(uint displayId)
-        {
-        }
-
-        public void PopEmpty(uint displayId, Command command)
-        {
-        }
     }
 }
