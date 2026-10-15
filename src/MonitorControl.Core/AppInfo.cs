@@ -11,5 +11,6 @@ public static class AppInfo
     public const string WebsiteUrl = "https://monitorcontrol.app";
     public const string DonateUrl = "https://opencollective.com/monitorcontrol/donate";
     public const string ContributorsUrl = "https://github.com/MonitorControl/MonitorControl/graphs/contributors";
-    public const string UpdateRepositoryUrl = "https://github.com/MonitorControl/MonitorControl";
+    /// <summary>Repository whose GitHub Releases carry the Windows installers and update packages.</summary>
+    public const string UpdateRepositoryUrl = "https://github.com/Witch-Cat/MonitorControlWindowsPort";
 }

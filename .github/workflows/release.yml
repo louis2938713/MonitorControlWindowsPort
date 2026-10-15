@@ -1,7 +1,8 @@
 name: Release
 
 # Push a tag like v4.4.0 (or v4.5.0-beta.1 for a pre-release) to build and publish a GitHub release
-# with installers (Setup.exe), portable zips and Velopack update packages for x64 and ARM64.
+# with the x64 and ARM64 installers and the Velopack update packages.
+# Release notes: write .github/release-notes/<tag>.md before tagging (generated from commits otherwise).
 on:
   push:
     tags: ["v*"]
@@ -79,22 +80,32 @@ jobs:
               --icon src/MonitorControl.App/Assets/AppIcon.ico --runtime $rid --channel $rid --outputDir releases
           }
 
-      - name: Checksums
+      # Same shape as the official macOS releases ("MonitorControl vX.Y.Z" with MonitorControl.X.Y.Z.dmg):
+      # MonitorControl.X.Y.Z.exe (x64) and MonitorControl.X.Y.Z-arm64.exe installers, plus the files the
+      # in-app updater reads (releases.<channel>.json and .nupkg) and SHA-256 checksums.
+      - name: Assemble release assets
         shell: pwsh
         run: |
-          Get-ChildItem releases -File | Where-Object Extension -in '.exe', '.zip', '.nupkg' | ForEach-Object {
+          $version = '${{ steps.version.outputs.version }}'
+          New-Item -ItemType Directory -Force assets | Out-Null
+          Copy-Item releases/MonitorControl-win-x64-Setup.exe "assets/MonitorControl.$version.exe"
+          Copy-Item releases/MonitorControl-win-arm64-Setup.exe "assets/MonitorControl.$version-arm64.exe"
+          Copy-Item releases/*.nupkg, releases/releases.*.json assets/
+          Get-ChildItem assets -File | ForEach-Object {
             "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
-          } | Set-Content releases/SHA256SUMS.txt -Encoding utf8
-          Get-Content releases/SHA256SUMS.txt
+          } | Set-Content assets/SHA256SUMS.txt -Encoding utf8
+          Get-Content assets/SHA256SUMS.txt
 
       - name: Publish GitHub release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $common = @('--outputDir', 'releases', '--repoUrl', "https://github.com/${{ github.repository }}", '--token', $env:GH_TOKEN,
-                      '--tag', '${{ github.ref_name }}', '--releaseName', 'MonitorControl ${{ steps.version.outputs.version }}', '--publish')
-          if ('${{ steps.version.outputs.prerelease }}' -eq 'true') { $common += '--pre' }
-          vpk upload github @common --channel win-x64
-          vpk upload github @common --channel win-arm64 --merge
-          gh release upload '${{ github.ref_name }}' releases/SHA256SUMS.txt --clobber
+          $tag = '${{ github.ref_name }}'
+          $arguments = @('release', 'create', $tag, '--title', "MonitorControl $tag")
+          # Hand-written notes in the official style when present, otherwise the commit/PR list.
+          $notes = ".github/release-notes/$tag.md"
+          if (Test-Path $notes) { $arguments += @('--notes-file', $notes) } else { $arguments += '--generate-notes' }
+          if ('${{ steps.version.outputs.prerelease }}' -eq 'true') { $arguments += '--prerelease' }
+          $arguments += (Get-ChildItem assets -File).FullName
+          gh @arguments
