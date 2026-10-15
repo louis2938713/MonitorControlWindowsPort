@@ -1,0 +1,27 @@
+<ui:FluentWindow x:Class="MonitorControl.App.UI.AlertWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 Width="440"
+                 SizeToContent="Height"
+                 ResizeMode="NoResize"
+                 WindowStartupLocation="CenterScreen"
+                 ShowInTaskbar="True"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <ui:TitleBar x:Name="TitleBar" ShowMinimize="False" ShowMaximize="False" />
+    <StackPanel Grid.Row="1" Margin="24,8,24,16">
+      <TextBlock x:Name="HeaderText" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" />
+      <TextBlock x:Name="MessageText" Margin="0,8,0,0" TextWrapping="Wrap" />
+    </StackPanel>
+    <Border Grid.Row="2" Padding="24,16" Background="{DynamicResource ControlFillColorDefaultBrush}">
+      <StackPanel x:Name="Buttons" HorizontalAlignment="Right" Orientation="Horizontal" />
+    </Border>
+  </Grid>
+</ui:FluentWindow>

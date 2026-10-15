@@ -20,10 +20,16 @@
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="System.Management" />
+    <PackageReference Include="WPF-UI" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Assets\AppIcon.ico" />
+    <EmbeddedResource Include="Localization\Strings\*.json" LogicalName="Strings.%(Filename).json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="BuildNumber" Value="$(BuildNumber)" />
   </ItemGroup>
 
   <ItemGroup>
