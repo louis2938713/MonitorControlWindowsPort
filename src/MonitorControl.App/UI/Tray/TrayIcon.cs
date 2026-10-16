@@ -92,13 +92,10 @@ internal sealed class TrayIcon : IDisposable
         }
     }
 
-    private void UpdateIconImage() =>
-        _icon.IconSource = new GeneratedIconSource
-        {
-            Text = Icons.Brightness,
-            FontFamily = new FontFamily(Icons.InstalledFontName),
-            FontSize = 26,
-            Size = 32,
-            Foreground = MonitorGeometry.TaskbarUsesLightTheme() ? Brushes.Black : Brushes.White,
-        };
+    private void UpdateIconImage()
+    {
+        var previous = _icon.Icon;
+        _icon.Icon = TrayIconRenderer.Create(MonitorGeometry.TaskbarUsesLightTheme() ? Colors.Black : Colors.White);
+        previous?.Dispose();
+    }
 }
