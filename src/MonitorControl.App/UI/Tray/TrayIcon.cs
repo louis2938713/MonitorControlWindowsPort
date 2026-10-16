@@ -70,10 +70,10 @@ internal sealed class TrayIcon : IDisposable
         _icon.Dispose();
     }
 
-    /// <summary>The MonitorControl app icon, at the size Windows uses in the notification area.</summary>
+    /// <summary>The MonitorControl app icon without its macOS margin, at the size Windows uses in the notification area.</summary>
     private static System.Drawing.Icon LoadAppIcon()
     {
-        using var stream = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/AppIcon.ico")).Stream;
+        using var stream = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/TrayIcon.ico")).Stream;
         var size = (int)Math.Round(SystemParameters.SmallIconWidth * GetSystemScale());
         return new System.Drawing.Icon(stream, size, size);
     }
