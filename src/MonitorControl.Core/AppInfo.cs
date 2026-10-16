@@ -6,7 +6,7 @@ public static class AppInfo
     public const string Name = "MonitorControl";
 
     /// <summary>Settings from builds older than this are considered incompatible and get reset.</summary>
-    public const int MinPreviousBuildNumber = 6262;
+    public const int MinPreviousBuildNumber = 1;
 
     public const string WebsiteUrl = "https://monitorcontrol.app";
     public const string DonateUrl = "https://opencollective.com/monitorcontrol/donate";

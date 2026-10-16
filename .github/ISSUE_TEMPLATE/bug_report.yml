@@ -61,7 +61,7 @@ body:
         examples:
             - **Windows version**: Windows 11 24H2
             - **PC model / graphics card**: Dell XPS 15 / NVIDIA RTX 3050
-            - **MonitorControl version**: v4.4.3
+            - **MonitorControl version**: v1.0.0
             - **Monitor(s)**: LG 38GN950, LG 27UN83A
             - **x64 or ARM64**: x64
       value: |

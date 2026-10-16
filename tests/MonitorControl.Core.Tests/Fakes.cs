@@ -185,7 +185,7 @@ internal sealed class TestRig : IDisposable
     {
         Prefs = new Prefs(new SettingsStoreBase());
         Manager = new DisplayManager(Prefs, State, Platform, Shades, Osd, Ui, new FakeAlerts());
-        Controller = new AppController(Prefs, State, Manager, Ui, new FakeAlerts(), 7152);
+        Controller = new AppController(Prefs, State, Manager, Ui, new FakeAlerts(), 1);
     }
 
     public Prefs Prefs { get; }

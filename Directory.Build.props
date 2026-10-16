@@ -15,9 +15,9 @@
     <Product>MonitorControl</Product>
     <Company>MonitorControl</Company>
     <Copyright>Copyright © MonitorControl. @JoniVR, @theOneyouseek, @waydabber and others</Copyright>
-    <Version>4.4.0</Version>
-    <!-- Mirrors CFBundleVersion of the macOS app; used for settings migration. -->
-    <BuildNumber>7152</BuildNumber>
+    <Version>1.0.0</Version>
+    <!-- Increase when the settings format changes; used for settings migration. -->
+    <BuildNumber>1</BuildNumber>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(CI)' == 'true'">
