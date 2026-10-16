@@ -1,8 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using H.NotifyIcon;
-using Microsoft.Win32;
 using MonitorControl.App.Localization;
 using MonitorControl.App.Platform;
 
@@ -30,12 +28,11 @@ internal sealed class TrayIcon : IDisposable
         _icon = new TaskbarIcon
         {
             NoLeftClickDelay = true,
+            Icon = LoadAppIcon(),
             ContextMenu = new ContextMenu { Items = { _settingsItem, _updateItem, new Separator(), _quitItem } },
         };
         _icon.TrayLeftMouseUp += (_, _) => ToggleFlyout();
-        UpdateIconImage();
         _icon.ForceCreate(enablesEfficiencyMode: false);
-        SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
         Loc.LanguageChanged += (_, _) => Refresh();
         Refresh();
     }
@@ -69,8 +66,22 @@ internal sealed class TrayIcon : IDisposable
 
     public void Dispose()
     {
-        SystemEvents.UserPreferenceChanged -= OnUserPreferenceChanged;
+        _icon.Icon?.Dispose();
         _icon.Dispose();
+    }
+
+    /// <summary>The MonitorControl app icon, at the size Windows uses in the notification area.</summary>
+    private static System.Drawing.Icon LoadAppIcon()
+    {
+        using var stream = Application.GetResourceStream(new Uri("pack://application:,,,/Assets/AppIcon.ico")).Stream;
+        var size = (int)Math.Round(SystemParameters.SmallIconWidth * GetSystemScale());
+        return new System.Drawing.Icon(stream, size, size);
+    }
+
+    private static double GetSystemScale()
+    {
+        using var source = new System.Windows.Interop.HwndSource(new System.Windows.Interop.HwndSourceParameters());
+        return source.CompositionTarget?.TransformToDevice.M11 ?? 1;
     }
 
     private void ToggleFlyout()
@@ -82,20 +93,5 @@ internal sealed class TrayIcon : IDisposable
         }
 
         OpenFlyout();
-    }
-
-    private void OnUserPreferenceChanged(object? sender, UserPreferenceChangedEventArgs e)
-    {
-        if (e.Category is UserPreferenceCategory.General or UserPreferenceCategory.VisualStyle or UserPreferenceCategory.Color)
-        {
-            Application.Current?.Dispatcher.BeginInvoke(UpdateIconImage);
-        }
-    }
-
-    private void UpdateIconImage()
-    {
-        var previous = _icon.Icon;
-        _icon.Icon = TrayIconRenderer.Create(MonitorGeometry.TaskbarUsesLightTheme() ? Colors.Black : Colors.White);
-        previous?.Dispose();
     }
 }

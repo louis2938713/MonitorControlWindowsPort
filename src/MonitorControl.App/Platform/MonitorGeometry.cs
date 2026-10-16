@@ -1,4 +1,3 @@
-using Microsoft.Win32;
 using MonitorControl.Core.Platform;
 using Windows.Win32;
 using Windows.Win32.Graphics.Gdi;
@@ -18,19 +17,5 @@ internal static unsafe class MonitorGeometry
         return PInvoke.GetMonitorInfo(monitor, &info)
             ? (DisplayEnumerator.ToRect(info.rcMonitor), DisplayEnumerator.ToRect(info.rcWork))
             : (new PixelRect(0, 0, 1920, 1080), new PixelRect(0, 0, 1920, 1040));
-    }
-
-    /// <summary>True when the taskbar uses the light theme (dark icons needed).</summary>
-    public static bool TaskbarUsesLightTheme()
-    {
-        using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-        return key?.GetValue("SystemUsesLightTheme") is int value && value != 0;
-    }
-
-    /// <summary>True when apps use the light theme.</summary>
-    public static bool AppsUseLightTheme()
-    {
-        using var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
-        return key?.GetValue("AppsUseLightTheme") is not int value || value != 0;
     }
 }
