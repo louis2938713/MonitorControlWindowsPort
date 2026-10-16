@@ -1,11 +1,3 @@
-### Carthage ###
-Carthage
-
-### macOS ###
-.DS_Store
-
-### Xcode ###
-xcuserdata/
 ### .NET / Visual Studio ###
 bin/
 obj/

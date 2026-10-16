@@ -43,19 +43,19 @@ body:
       label: Environment Information (please complete the following information)
       description: |
         examples:
-            - **macOS version**: 11.4 Big Sur
-            - **Mac model**: MacBook Pro (16-inch, 2019)
-            - **MonitorControl version**: v2.1.0
+            - **Windows version**: Windows 11 24H2
+            - **PC model / graphics card**: Dell XPS 15 / NVIDIA RTX 3050
+            - **MonitorControl version**: v4.4.3
             - **Monitor(s)**: LG 38GN950, LG 27UN83A
             - **Monitor Cable(s)/Connection(s)**:  
-            &nbsp;&nbsp;- Mac Mini -> DisplayPort 2.1 -> LG 38GN950
-            &nbsp;&nbsp;- Mac Mini -> Belkin Thunderbolt 3 Dock Core -> LG 27UN83A
-            - **Apple Silicon/M1 (yes or no)**: no
+            &nbsp;&nbsp;- PC -> DisplayPort 2.1 -> LG 38GN950
+            &nbsp;&nbsp;- PC -> Belkin Thunderbolt 3 Dock Core -> LG 27UN83A
+            - **x64 or ARM64**: x64
       value: |
-        - macOS version:
-        - Mac model:
+        - Windows version:
+        - PC model / graphics card:
         - MonitorControl version:
         - Monitor(s):
         - Monitor Cable(s)/Connection(s):
-        - Apple Silicon/M1 (yes or no):
+        - x64 or ARM64:
       render: markdown

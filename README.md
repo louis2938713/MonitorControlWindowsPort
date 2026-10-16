@@ -23,11 +23,11 @@ with an on-screen display. A Windows port of <a href="https://github.com/Monitor
 
 ## Install
 
-1. Download `MonitorControl-win-x64-Setup.exe` (or `win-arm64` for ARM PCs) from [Releases](../../releases).
+1. Download `MonitorControl.X.Y.Z.exe` (or `MonitorControl.X.Y.Z-arm64.exe` for ARM PCs) from [Releases](../../releases).
 2. Run it. No administrator rights are needed. The app installs for the current user and updates itself.
-3. The MonitorControl icon (a sun) appears in the notification area — it may be in the hidden icons (`^`). Drag it to the taskbar to keep it visible.
+3. The MonitorControl icon appears in the notification area — it may be in the hidden icons (`^`). Drag it to the taskbar to keep it visible.
 
-A portable zip is also available. Releases are currently **not code signed**, so Windows SmartScreen may warn on first launch
+Releases are currently **not code signed**, so Windows SmartScreen may warn on first launch
 (*More info → Run anyway*). SHA-256 checksums are published with every release (`SHA256SUMS.txt`).
 
 Requirements: Windows 10 (21H2 or later) or Windows 11, x64 or ARM64.
@@ -81,7 +81,7 @@ dotnet run --project src/MonitorControl.App
 
 - `src/MonitorControl.Core` — display logic (no Windows dependency, unit tested).
 - `src/MonitorControl.App` — WPF app and Windows integration (DDC/CI via dxva2, WMI, gamma, keyboard hook, Core Audio).
-- `tools/localization` — translations: `en.json` is the reference; run `dotnet run tools/localization/convert-strings.cs` after changing strings.
+- `src/MonitorControl.App/Localization/Strings` — translations, one JSON file per language; `en.json` is the reference and the tests check that every language has the same keys.
 - Releases: push a `vX.Y.Z` tag; `.github/workflows/release.yml` builds and publishes the installers.
 
 ## Credits
