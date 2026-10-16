@@ -9,6 +9,8 @@ namespace MonitorControl.Core.Displays;
 /// </summary>
 public sealed class InternalDisplay(DisplayInfo info, DisplayManager manager, IInternalBrightness brightness) : Display(info, manager)
 {
+    protected override bool HasNativeBrightnessOsd => true;
+
     public float GetInternalBrightness() => IsDummy ? 1 : brightness.Get() ?? 1;
 
     public void SetInternalBrightness(float value)

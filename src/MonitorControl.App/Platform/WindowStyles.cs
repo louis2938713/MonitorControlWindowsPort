@@ -4,6 +4,7 @@ using System.Windows.Media;
 using MonitorControl.Core.Platform;
 using Windows.Win32;
 using Windows.Win32.Foundation;
+using Windows.Win32.Graphics.Gdi;
 using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace MonitorControl.App.Platform;
@@ -40,8 +41,13 @@ internal static class WindowPlacement
 
         var hwnd = new HWND(handle);
         var flags = SET_WINDOW_POS_FLAGS.SWP_NOSIZE | SET_WINDOW_POS_FLAGS.SWP_NOACTIVATE;
-        // Move onto the target monitor first so WPF applies that monitor's DPI before measuring.
-        PInvoke.SetWindowPos(hwnd, new HWND(-1), area.Left + (area.Width / 2), area.Top + (area.Height / 2), 0, 0, flags);
+        var center = new System.Drawing.Point(area.Left + (area.Width / 2), area.Top + (area.Height / 2));
+        if (PInvoke.MonitorFromWindow(hwnd, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST) != PInvoke.MonitorFromPoint(center, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST))
+        {
+            // Move onto the target monitor first so WPF applies that monitor's DPI before measuring.
+            PInvoke.SetWindowPos(hwnd, new HWND(-1), center.X, center.Y, 0, 0, flags);
+        }
+
         window.UpdateLayout();
         var dpi = VisualTreeHelper.GetDpi(window);
         var width = (int)Math.Ceiling(window.ActualWidth * dpi.DpiScaleX);

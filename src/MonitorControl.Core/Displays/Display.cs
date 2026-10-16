@@ -126,6 +126,9 @@ public class Display : IEquatable<Display>
 
     public float CalcNewBrightness(bool isUp, bool isSmallIncrement) => StepMath.CalcNewBrightness(GetBrightness(), isUp, isSmallIncrement);
 
+    /// <summary>True when Windows already shows its own brightness OSD for this display's brightness changes.</summary>
+    protected virtual bool HasNativeBrightnessOsd => false;
+
     public virtual void StepBrightness(bool isUp, bool isSmallIncrement)
     {
         if (ReadPrefAsBool(PrefKey.UnavailableDdc, Command.Brightness))
@@ -136,7 +139,11 @@ public class Display : IEquatable<Display>
         var value = CalcNewBrightness(isUp, isSmallIncrement);
         if (SetBrightness(value))
         {
-            Manager.Osd.Show(Id, Command.Brightness, value * 64, maxValue: 64);
+            if (!HasNativeBrightnessOsd)
+            {
+                Manager.Osd.Show(Id, Command.Brightness, value * 64, maxValue: 64);
+            }
+
             if (SliderHandler.TryGetValue(Command.Brightness, out var slider))
             {
                 slider.SetValue(value, Id);

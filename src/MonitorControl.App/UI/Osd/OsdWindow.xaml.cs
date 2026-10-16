@@ -68,15 +68,16 @@ public partial class OsdWindow
         }
 
         BeginAnimation(OpacityProperty, null);
-        Opacity = 1;
         if (!IsVisible)
         {
+            Opacity = 0; // Not drawn until placed, so it never flashes at its default position.
             Show();
         }
 
         WindowPlacement.Place(this, workArea, (width, height) => (
             workArea.Left + ((workArea.Width - width) / 2),
             workArea.Bottom - height - (int)(48 * VisualTreeHelper.GetDpi(this).DpiScaleY)));
+        Opacity = 1;
         _hideTimer.Stop();
         _hideTimer.Interval = duration;
         _hideTimer.Start();
