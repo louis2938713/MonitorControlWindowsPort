@@ -75,6 +75,10 @@ jobs:
         run: |
           dotnet tool install -g vpk --version $env:VPK_VERSION
           foreach ($rid in 'win-x64', 'win-arm64') {
+            # The previous release's package lets vpk build a delta package (small download for existing installs).
+            vpk download github --repoUrl https://github.com/${{ github.repository }} --token ${{ secrets.GITHUB_TOKEN }} `
+              --channel $rid --outputDir releases
+            if ($LASTEXITCODE -ne 0) { Write-Warning "No previous $rid release: full package only"; $global:LASTEXITCODE = 0 }
             vpk pack --packId MonitorControl --packVersion ${{ steps.version.outputs.version }} --packDir publish/$rid `
               --mainExe MonitorControl.exe --packTitle MonitorControl --packAuthors MonitorControl `
               --icon src/MonitorControl.App/Assets/AppIcon.ico --runtime $rid --channel $rid --outputDir releases
@@ -90,7 +94,8 @@ jobs:
           New-Item -ItemType Directory -Force assets | Out-Null
           Copy-Item releases/MonitorControl-win-x64-Setup.exe "assets/MonitorControl.$version.exe"
           Copy-Item releases/MonitorControl-win-arm64-Setup.exe "assets/MonitorControl.$version-arm64.exe"
-          Copy-Item releases/*.nupkg, releases/releases.*.json assets/
+          # Only this version's packages (the previous one downloaded for deltas is already in its own release).
+          Copy-Item "releases/MonitorControl-$version-*.nupkg", releases/releases.*.json assets/
           Get-ChildItem assets -File | ForEach-Object {
             "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())  $($_.Name)"
           } | Set-Content assets/SHA256SUMS.txt -Encoding utf8

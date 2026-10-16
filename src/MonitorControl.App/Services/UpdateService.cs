@@ -13,11 +13,10 @@ namespace MonitorControl.App.Services;
 
 /// <summary>
 /// Updates through Velopack and GitHub Releases (replacement for Sparkle). Packages are verified by Velopack
-/// (SHA checksums) and downloaded over HTTPS. Automatic checks run shortly after startup and then daily.
+/// (SHA checksums) and downloaded over HTTPS. Automatic checks run at startup and then daily.
 /// </summary>
 internal sealed class UpdateService : IDisposable
 {
-    private static readonly TimeSpan FirstCheckDelay = TimeSpan.FromMinutes(1);
     private static readonly TimeSpan CheckInterval = TimeSpan.FromHours(24);
     private readonly Prefs _prefs;
     private readonly Action _beforeRestart;
@@ -28,20 +27,25 @@ internal sealed class UpdateService : IDisposable
     {
         _prefs = prefs;
         _beforeRestart = beforeRestart;
-        _timer.Interval = FirstCheckDelay;
-        _timer.Tick += async (_, _) =>
-        {
-            _timer.Interval = CheckInterval;
-            if (_prefs.Bool(PrefKey.EnableAutomaticUpdateChecks))
-            {
-                await CheckAsync(userInitiated: false).ConfigureAwait(true);
-            }
-        };
+        _timer.Interval = CheckInterval;
+        _timer.Tick += async (_, _) => await AutomaticCheckAsync().ConfigureAwait(true);
     }
 
-    public void Start() => _timer.Start();
+    public void Start()
+    {
+        _timer.Start();
+        _ = AutomaticCheckAsync();
+    }
 
     public void Dispose() => _timer.Stop();
+
+    private async Task AutomaticCheckAsync()
+    {
+        if (_prefs.Bool(PrefKey.EnableAutomaticUpdateChecks))
+        {
+            await CheckAsync(userInitiated: false).ConfigureAwait(true);
+        }
+    }
 
     /// <summary>Checks for an update and offers to install it.</summary>
     public async Task CheckAsync(bool userInitiated)
